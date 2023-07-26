@@ -27,16 +27,16 @@ local Window = Rayfield:CreateWindow({
 })
 
 local MainTab = Window:CreateTab("Catching", nil) -- Title, Image
-local MainSection = MainTab:CreateSection("Main")
+local MainSection = MainTab:CreateSection("Catching Features")
 
 Rayfield:Notify({
-   Title = "Script Made By TactiqR",
+   Title = "Authentication Success",
    Content = "",
    Duration = 5,
    Image = 13047715178,
    Actions = { -- Notification Buttons
       Ignore = {
-         Name = "Okay!",
+         Name = "Close",
          Callback = function()
          print("The user tapped Okay!")
       end
@@ -49,7 +49,7 @@ Rayfield:Notify({
    
 
 local Toggle = MainTab:CreateToggle({
-   Name = "Fake JP (Jump twice)",
+   Name = "Fake Boost (Jump twice)",
    CurrentValue = false,
    Flag = "Toggle",
    Callback = function(Value)
