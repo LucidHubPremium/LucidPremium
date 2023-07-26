@@ -79,6 +79,13 @@ if _G.infinJumpStarted == nil then
 end
    end,
 })
+
+local Button = Tab:CreateButton({
+	Name = "High Angle",
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
+	end,
+})
 	
     local Tab = Window:CreateTab("Other") -- Title, Image
 
@@ -102,12 +109,7 @@ end
         end
      })
 
-local Button = Tab:CreateButton({
-	Name = "High Angle",
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
-	end,
-})
+
      
      local track = nil
     
