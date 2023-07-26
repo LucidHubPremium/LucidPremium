@@ -27,7 +27,6 @@ local Window = Rayfield:CreateWindow({
 })
 
 local MainTab = Window:CreateTab("Catching", nil) -- Title, Image
-local MainSection = MainTab:CreareSection("Mags")
 local MainSection = MainTab:CreateSection("Main")
 
 Rayfield:Notify({
@@ -47,42 +46,7 @@ Rayfield:Notify({
 
 ---
     
-    local Toggle = MainTab:CreateToggle({
-        Name = "Regular",
-        CurrentValue = false,
-        Flag = "Togglebalgnt", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            blatoggle = Value
-            if blatoggle == true then
-                task.wait()
-                local UserInputService = game:GetService("UserInputService")
-                UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        regular()
-                    end
-                end)
-            end
-        end
-    })    
-
-local Slider = MainTab:CreateSlider({
-       Name = "Regular Range",
-       Range = {0, 60},
-       Increment = 0.1,
-       Suffix = "Range",
-       CurrentValue = 0,
-       Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-       Callback = function(Value)
-           if blatoggle == true then
-           blatant = Value
-           else
-               if blatoggle == false then
-                   blatant = 0
-            end
-        end
-    end
-    })
----
+   
 
 local Toggle = MainTab:CreateToggle({
    Name = "Fake JP (Jump twice)",
