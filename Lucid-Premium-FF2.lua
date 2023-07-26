@@ -80,7 +80,7 @@ end
    end,
 })
 
-local Button = Tab:CreateButton({
+local Button = MainTab:CreateButton({
 	Name = "High Angle",
 	Callback = function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
