@@ -26,7 +26,7 @@ local function onChatted(p,msg)
         if p==player and msg:lower():sub(1,4)=="/spy" then
             enabled = not enabled
             wait(0.3)
-            privateProperties.Text = "[Lucid Premium Spy "..(enabled and "EN" or "DIS").."ABLED]"
+            privateProperties.Text = "[Lucid Premium Spy] "..(enabled and "EN" or "DIS").."ABLED:"
             StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
         elseif enabled and (spyOnMyself==true or p~=player) then
             msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
@@ -56,7 +56,7 @@ end
 Players.PlayerAdded:Connect(function(p)
     p.Chatted:Connect(function(msg) onChatted(p,msg) end)
 end)
-privateProperties.Text = "[Lucid Premium Spy "..(enabled and "EN" or "DIS").."ABLED]"
+privateProperties.Text = "[Lucid Premium Spy] "..(enabled and "EN" or "DIS").."ABLED:"
 StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
 local chatFrame = player.PlayerGui.Chat.Frame
 chatFrame.ChatChannelParentFrame.Visible = true
