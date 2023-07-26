@@ -150,4 +150,11 @@ local Button = MainTab:CreateButton({
     end
      })
 
+local Button = MainTab:CreateButton({
+	Name = "Chat Spy",
+	Callback = function()
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid-Premium-ChatSpy.lua'))()
+	end,
+})
+
      
