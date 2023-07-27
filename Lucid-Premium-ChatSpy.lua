@@ -42,7 +42,7 @@ local function onChatted(p,msg)
                 if public then
                     saymsg:FireServer((publicItalics and "/me " or '').."[Lucid Premium Spy] [".. p.Name .."]: "..msg,"All")
                 else
-                    privateProperties.Text = "{SPY} [".. p.Name .."]: "..msg
+                    privateProperties.Text = "[Lucid Premium Spy] [".. p.Name .."]: "..msg
                     StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
                 end
             end
