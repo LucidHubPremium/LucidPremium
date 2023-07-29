@@ -454,12 +454,13 @@ local delay = 0
 local catchdelay = 0
 
 local tab1 = window:CreateTab("Catching", 80373024)
-local tab2 = window:CreateTab("Quarterback", 80373024)
+local tab2 = window:CreateTab("QB", 80373024)
 local tab3 = window:CreateTab("Defense", 80373024)
 local tab4 = window:CreateTab("Visuals", 80373024)
+local tab5 = window:CreateTab("Trolling", 80373024)
 
 tab1:CreateToggle({
-	Name = "Mag script",
+	Name = "Mag Script",
 	CurrentValue = false,
 	Callback = function(v)
         local hacker = game.Players.LocalPlayer
@@ -1080,14 +1081,13 @@ tab2:CreateToggle({
 tab3:CreateToggle({
         Name = "Block Reach",
         CurrentValue = false,
-        Flag = "Toggleraeachvlox1",
         Callback = function(Value)
             block = Value
             if block == true then
                 setBlockSize()
             else
                 game.Players.LocalPlayer.Character.BlockPart.Size = defaultSize
-                blockslider = 10.5
+                blockslider = 1.5
             end
         end
     })
@@ -1100,7 +1100,6 @@ tab3:CreateSlider({
         Increment = 0.1,
         Suffix = "Transparency",
         CurrentValue = 1,
-        Flag = "Slidersliderblock1",
         Callback = function(Value)
             if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("BlockPart") then
             game.Players.LocalPlayer.Character.BlockPart.Transparency = Value
@@ -1111,7 +1110,7 @@ tab3:CreateSlider({
 
  tab3:CreateToggle({
     Name = "Football Landing Predictions",
-    CurrentValue = true,
+    CurrentValue = false,
     Callback = function(v)
         if v and not toggleActive then
             toggleActive = true
