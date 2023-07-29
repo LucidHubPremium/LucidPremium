@@ -105,7 +105,7 @@ local Button = MainTab:CreateButton({
 local Toggle = Tab:CreateToggle({
         Name = "Block Reach",
         CurrentValue = false,
-        Flag = "Toggle",
+        Flag = "Toggleraeachvlox1",
         Callback = function(Value)
             block = Value
             if block == true then
