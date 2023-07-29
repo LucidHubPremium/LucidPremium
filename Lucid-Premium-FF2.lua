@@ -26,6 +26,19 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
+ local Lucid Premium = {
+     pv = true,
+     universal = 0,
+     blatant = 0,
+     unitoggle = true,
+     blatoggle = true,
+     block = true,
+     blockslider = 1.5,
+     AutoFollowQb = true,
+     tprange = 0,
+     autocatchv = 0,
+    }
+
 local MainTab = Window:CreateTab("Catching", nil) -- Title, Image
 local MainSection = MainTab:CreateSection("Catching Features")
 
