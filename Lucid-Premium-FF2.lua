@@ -112,7 +112,7 @@ local Toggle = Tab:CreateToggle({
                 setBlockSize()
             else
                 game.Players.LocalPlayer.Character.BlockPart.Size = defaultSize
-                blockslider = 1.5
+                blockslider = 10.5
             end
         end
     })
@@ -135,50 +135,7 @@ local Slider = Tab:CreateSlider({
         end
     })
 
-local Toggle = Tab:CreateToggle({
-    Name = "QB Aim Trajectory Predictions",
-    CurrentValue = toggleState,
-    Flag = "Toggle1",
-    Callback = function(data)
-        toggleState = data -- Update the toggle state
-        
-        if toggleState then
-            -- Toggle turned on
-            local beam = Instance.new("Beam")
-            local a0 = Instance.new("Attachment")
-            local a1 = Instance.new("Attachment")
-            beam.Color = ColorSequence.new(beamColor)
-            beam.Transparency = NumberSequence.new(0, 0)
-            beam.Segments = 10 * 300
-            beam.Name = "Hitbox"
-            beam.Parent = workspace.Terrain
-            a0.Parent = workspace.Terrain
-            a1.Parent = workspace.Terrain
-            beam.Attachment0 = a0
-            beam.Attachment1 = a1
-            beam.Width0 = 0.5
-            beam.Width1 = 0.5
-            while toggleState do
-                task.wait()
-                if player.Character:FindFirstChild("Football") and player.PlayerGui:FindFirstChild("BallGui") and player.Character:FindFirstChild("Head") then
-                    local power = tonumber(player.PlayerGui.BallGui.Frame.Disp.Text)
-                    local direction = (mouse.Hit.Position - workspace.CurrentCamera.CFrame.Position).Unit
-                    local vel = power * direction
-                    local origin = player.Character.Head.Position + direction * 5
-                    local c0, c1, cf1, cf2 = beamProjectile(Vector3.new(0, -28, 0), vel, origin, 15)
-                    a0.CFrame = a0.Parent.CFrame:Inverse() * cf1
-                    a1.CFrame = a1.Parent.CFrame:Inverse() * cf2
-                    beam.CurveSize0 = c0
-                    beam.CurveSize1 = c1
-                end
-            end
-            beam:Destroy() -- Clean up the beam when toggled off
-        else
-            -- Toggle turned off
-            -- Add any additional code here to handle the toggle turning off
-        end
-    end
-})
+
 
 local Toggle = Tab:CreateToggle({
     Name = "Football Landing Predictions",
