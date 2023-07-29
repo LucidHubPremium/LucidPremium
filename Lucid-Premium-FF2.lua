@@ -572,7 +572,7 @@ end
 				local c0, c1, cf1, cf2 = beamProjectile(Vector3.new(0, -28, 0), dir * power, player.Character.Head.Position + dir * 5, t * 1.75)
 				beam.CurveSize0 = c0
 				beam.CurveSize1 = c1
-				beam.Color = ColorSequence.new(Color3.fromRGB(37, 115, 58))
+				beam.Color = ColorSequence.new(Color3.fromRGB(135, 82, 215))
 				a0.CFrame = a0.Parent.CFrame:Inverse() * cf1
 				a1.CFrame = a1.Parent.CFrame:Inverse() * cf2
 				gui.Main.AngleCard.Val.Text = math.round(throwData.angle * 100) / 100
