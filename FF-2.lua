@@ -1264,4 +1264,12 @@ tab3:CreateSlider({
         end
      })
 
+  tab4:CreateToggle({
+	Name = "Rainbow Chat",
+  CurrentValue = false,
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-2/main/RGB%20Bubble%20chat.Lua"))()
+	end,
+})
+
 
