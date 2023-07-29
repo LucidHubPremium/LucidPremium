@@ -120,7 +120,7 @@ local showCards = false -- Determines if to show cards or not
 local throwHeightOffset = 0
 local straightenThrowDirection = false -- Determines if to straighten the move direction
 local leadDistance = 0 -- Lead Distance (self-explanatory)
-local beamColor = Color3.fromRGB(37, 115, 58)
+local beamColor = Color3.fromRGB(135, 82, 215)
 local throwData = {
 	power = 0,
 	direction = Vector3.new(0, 0, 0),
@@ -355,7 +355,7 @@ task.spawn(function()
 		end
 			local highlight = Instance.new("Highlight")
 			highlight.Name = "Highlight"
-			highlight.FillColor = Color3.fromRGB(37, 115, 58)
+			highlight.FillColor = Color3.fromRGB(135, 82, 215)
 			highlight.Parent = np
 		end
 		
