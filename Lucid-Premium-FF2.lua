@@ -104,7 +104,7 @@ local Toggle = Tab:CreateToggle({
         end
     })
 
-local Section = Tab:CreateSection("Mag")
+local Section = MainTab:CreateSection("Mag")
 
 
 
