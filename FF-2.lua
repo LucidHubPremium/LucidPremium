@@ -211,7 +211,7 @@ local window = {}; do
 		end)
 		self.UI.Main.Core.Topbar.CloseButton.MouseButton1Click:Connect(function()
 			self:Notify({
-				Title = "Relinquish UI",
+				Title = "Lucid Premium",
 				Content = "Press TAB to re-open ui.",
 				Duration = 4
 			})
@@ -458,6 +458,16 @@ local tab2 = window:CreateTab("QB", 80373024)
 local tab3 = window:CreateTab("Defense", 80373024)
 local tab4 = window:CreateTab("Visuals", 80373024)
 local tab5 = window:CreateTab("Trolling", 80373024)
+
+
+local Velocity hub = {
+block = true,
+blockslider = 1.5,
+}
+
+
+
+
 
 tab1:CreateToggle({
 	Name = "Mag Script",
@@ -1077,10 +1087,18 @@ tab2:CreateToggle({
 })
 
 -----
-
+local range = blockslider
+    local defaultSize = Vector3.new(0.75, 5, 1.5)
+    
+    local function setBlockSize()
+        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("BlockPart") then
+            game.Players.LocalPlayer.Character.BlockPart.Size = Vector3.new(range, 5, range)
+        end
+    end
 tab3:CreateToggle({
         Name = "Block Reach",
         CurrentValue = false,
+        Flag = "Toggleraeachvlox1",
         Callback = function(Value)
             block = Value
             if block == true then
@@ -1092,6 +1110,23 @@ tab3:CreateToggle({
         end
     })
 
+tab3:CreateSlider({
+        Name = "Block Reach Distance",
+        Range = {1.5, 20},
+        Increment = 0.1,
+        Suffix = "Range",
+        CurrentValue = 1.5,
+        Flag = "Slidersliderblock1",
+        Callback = function(Value)
+            blockslider = Value
+            range = blockslider
+            if block == true then
+                setBlockSize()
+            end
+        end
+    })
+    
+
 
 
 tab3:CreateSlider({
@@ -1100,6 +1135,7 @@ tab3:CreateSlider({
         Increment = 0.1,
         Suffix = "Transparency",
         CurrentValue = 1,
+	Flag = "Slidersliderblock1",
         Callback = function(Value)
             if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("BlockPart") then
             game.Players.LocalPlayer.Character.BlockPart.Transparency = Value
