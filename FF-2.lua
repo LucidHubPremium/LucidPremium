@@ -469,41 +469,6 @@ blockslider = 1.5,
 
 
 
-tab1:CreateToggle({
-	Name = "Mag Script",
-	CurrentValue = false,
-	Callback = function(v)
-        local hacker = game.Players.LocalPlayer
-		local service = game:GetService("RunService")
-      function magBall(ball)
-		if ball and hacker.Character then do
-			wait(delay)
-            firetouchinterest(hacker.Character["Right Arm"], ball, 0)
-            firetouchinterest(hacker.Character["Left Arm"], ball, 0)
-             firetouchinterest(hacker.Character["Right Arm"], ball, 1)
-             firetouchinterest(hacker.Character["Left Arm"], ball, 1)
-         end
-      end
-	end
-    service.Stepped:Connect(function()
-        for i,v in pairs(workspace:GetChildren()) do
-            if v.Name == "Football" and v:IsA("BasePart") then
-                magBall(v)
-            end
-			end  
-end)
-	end,
-})
-
-
-tab1:CreateSlider({
-	Name = "Mag Delay",
-	Range = {0, 5},
-	CurrentValue = 0,
-	Callback = function(G)
-		delay = G
-	end,
-})
 
 tab1:CreateToggle({
    Name = "Fake Boost (Jump twice)",
@@ -1080,7 +1045,7 @@ tab2:CreateToggle({
 
 tab2:CreateToggle({
 	Name = "Show Cards",
-	CurrentValue = true,
+	CurrentValue = false,
 	Callback = function(v)
 		showCards = v
 	end,
