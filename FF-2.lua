@@ -579,7 +579,38 @@ tab1:CreateToggle({
      
      local track = nil
     
-     tab4:CreateToggle({
+    
+
+  tab4:CreateToggle({
+	Name = "Chat Spy",
+  CurrentValue = false,
+	Callback = function()
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid-Premium-ChatSpy.lua'))()
+	end,
+})
+
+  
+  tab4:CreateToggle({
+        Name = "Remove Uniform",
+        CurrentValue = false,
+        Callback = function()
+            for i, v in pairs(game.workspace:GetDescendants()) do
+                if v:IsA("Model") and v.Parent.Name == game.Players.LocalPlayer.Name and v.Name == "Uniform" then
+                v:Destroy()
+                end
+            end
+        end
+     })
+
+  tab4:CreateToggle({
+	Name = "Rainbow Chat",
+  CurrentValue = false,
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-2/main/RGB%20Bubble%20chat.Lua"))()
+	end,
+})
+
+tab5:CreateToggle({
         Name = "Underground",
         CurrentValue = false,
         Callback = function(Value)
@@ -613,34 +644,5 @@ tab1:CreateToggle({
             end
     end
      })
-
-  tab4:CreateToggle({
-	Name = "Chat Spy",
-  CurrentValue = false,
-	Callback = function()
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid-Premium-ChatSpy.lua'))()
-	end,
-})
-
-  
-  tab4:CreateToggle({
-        Name = "Remove Uniform",
-        CurrentValue = false,
-        Callback = function()
-            for i, v in pairs(game.workspace:GetDescendants()) do
-                if v:IsA("Model") and v.Parent.Name == game.Players.LocalPlayer.Name and v.Name == "Uniform" then
-                v:Destroy()
-                end
-            end
-        end
-     })
-
-  tab4:CreateToggle({
-	Name = "Rainbow Chat",
-  CurrentValue = false,
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-2/main/RGB%20Bubble%20chat.Lua"))()
-	end,
-})
 
 
