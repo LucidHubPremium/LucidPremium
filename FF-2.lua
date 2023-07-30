@@ -515,56 +515,7 @@ tab1:CreateToggle({
 
 
 
- tab3:CreateToggle({
-    Name = "Football Landing Predictions",
-    CurrentValue = false,
-    Callback = function(v)
-        if v and not toggleActive then
-            toggleActive = true
-            eventConnection = workspace.ChildAdded:Connect(function(b)
-                if b.Name == "Football" and b:IsA("BasePart") then
-                    task.wait()
-                    local vel = b.Velocity
-                    local pos = b.Position
-                    local c0, c1, cf1, cf2 = beamProjectile(Vector3.new(0, -28, 0), vel, pos, 10)
-                    local beam = Instance.new("Beam")
-                    local a0 = Instance.new("Attachment")
-                    local a1 = Instance.new("Attachment")
-                    beam.Color = ColorSequence.new(Color3.fromRGB(37, 115, 58))
-                    beam.Transparency = NumberSequence.new(0, 0)
-                    beam.CurveSize0 = c0
-                    beam.CurveSize1 = c1
-                    beam.Name = "Hitbox"
-                    beam.Parent = workspace.Terrain
-                    beam.Transparency = NumberSequence.new({
-                        NumberSequenceKeypoint.new(0, 1),
-                        NumberSequenceKeypoint.new(0.01, 0),
-                        NumberSequenceKeypoint.new(1, 0),
-                        NumberSequenceKeypoint.new(1, 0.01),
-                    })
-                    beam.Segments = 1750
-                    a0.Parent = workspace.Terrain
-                    a1.Parent = workspace.Terrain
-                    a0.CFrame = a0.Parent.CFrame:Inverse() * cf1
-                    a1.CFrame = a1.Parent.CFrame:Inverse() * cf2
-                    beam.Attachment0 = a0
-                    beam.Attachment1 = a1
-                    beam.Width0 = 0.5
-                    beam.Width1 = 0.5
-                    repeat task.wait() until b.Parent ~= workspace
-                    a0:Destroy()
-                    a1:Destroy()
-                end
-            end)
-        elseif not Value and toggleActive then
-            toggleActive = false
-            if eventConnection then
-                eventConnection:Disconnect()
-            end
-        end
-         end,
-     })
--------
+
 
         tab4:CreateToggle({
         Name = "Finish Captain Race",
