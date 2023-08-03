@@ -1,6 +1,6 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local ArrayField = loadstring(game:HttpGet('https://raw.githubusercontent.com/UI-Interface/ArrayField/main/Source.lua'))()
 
-local Window = Rayfield:CreateWindow({
+local Window = ArrayField:CreateWindow({
    Name = "Lucid Premium - Football Fusion 2",
    LoadingTitle = "Lucid Premium",
    LoadingSubtitle = "",
@@ -42,19 +42,18 @@ local Window = Rayfield:CreateWindow({
 local MainTab = Window:CreateTab("Catching", nil) -- Title, Image
 local MainSection = MainTab:CreateSection("Catching Features")
 
-Rayfield:Notify({
-   Title = "Authentication Success",
-   Content = "",
-   Duration = 5,
-   Image = 13047715178,
-   Actions = { -- Notification Buttons
-      Ignore = {
-         Name = "Close",
-         Callback = function()
-         print("The user tapped Okay!")
-      end
-   },
-},
+Window:Prompt({
+    Title = 'Authentication',
+    SubTitle = 'Success',
+    Content = 'Welcome to Lucid Premium FF2!',
+    Actions = {
+        Accept = {
+            Name = 'Accept',
+            Callback = function()
+                print('Pressed')
+            end,
+        }
+    }
 })
 
 ---
@@ -810,4 +809,6 @@ local Button = Tab:CreateButton({
 	end,
 })
 
-     
+Arrayfield:SaveConfiguration("Nameofconfig")
+
+Arrayfield:LoadConfigurationPath("Nameofconfig")
