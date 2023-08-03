@@ -10,11 +10,11 @@ local Window = Rayfield:CreateWindow({
       FileName = "Example Hub"
    },
    Discord = {
-      Enabled = false,
+      Enabled = true,
       Invite = "discord.gg/tQcZcfSK", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
       RememberJoins = true -- Set this to false to make them join the discord every time they load it up
    },
-   KeySystem = true, -- Set this to true to use our key system
+   KeySystem = false, -- Set this to true to use our key system
    KeySettings = {
       Title = "Lucid Premium",
       Subtitle = "Key System",
@@ -640,75 +640,6 @@ local Toggle = Tab:CreateToggle({
 })
 
     local Tab = Window:CreateTab("Defense") -- Title, Image
-	
-local Toggle = Tab:CreateToggle({
-        Name = "Block Reach",
-        CurrentValue = false,
-        Flag = "Toggleraeachvlox1",
-        Callback = function(Value)
-            block = Value
-            if block == true then
-                setBlockSize()
-            else
-                game.Players.LocalPlayer.Character.BlockPart.Size = defaultSize
-                blockslider = 10.5
-            end
-        end
-    })
-
-local MainSection = MainTab:CreateSection("Mag")
-
-local Toggle = Tab:CreateToggle({
-	Name = "Mag script",
-	CurrentValue = false,
-	Callback = function(v)
-        local hacker = game.Players.LocalPlayer
-		local service = game:GetService("RunService")
-      function magBall(ball)
-		if ball and hacker.Character then do
-			wait(delay)
-            firetouchinterest(hacker.Character["Right Arm"], ball, 0)
-            firetouchinterest(hacker.Character["Left Arm"], ball, 0)
-             firetouchinterest(hacker.Character["Right Arm"], ball, 1)
-             firetouchinterest(hacker.Character["Left Arm"], ball, 1)
-         end
-      end
-	end
-    service.Stepped:Connect(function()
-        for i,v in pairs(workspace:GetChildren()) do
-            if v.Name == "Football" and v:IsA("BasePart") then
-                magBall(v)
-            end
-			end  
-end)
-	end,
-})
-
-
-local Slider = Tab:CreateSlider({
-	Name = "Mag Delay",
-	Range = {0, 5},
-	CurrentValue = 0,
-	Callback = function(G)
-		delay = G
-	end,
-})
-
-
-
-local Slider = Tab:CreateSlider({
-        Name = "Block Reach Visibility",
-        Range = {0, 1},
-        Increment = 0.1,
-        Suffix = "Transparency",
-        CurrentValue = 1,
-        Flag = "Slidersliderblock1",
-        Callback = function(Value)
-            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("BlockPart") then
-            game.Players.LocalPlayer.Character.BlockPart.Transparency = Value
-            end
-        end
-    })
 
 
 
@@ -802,34 +733,17 @@ local ColorPicker = Tab:CreateColorPicker({
         beamColor = Value -- Update beamColor variable
     end
 })
-	
-    local Tab = Window:CreateTab("Other") -- Title, Image
 
-     local Section = Tab:CreateSection("Features")
+local Tab = Window:CreateTab("Auto") -- Title, Image
 
-     local Button = Tab:CreateButton({
+local Button = Tab:CreateButton({
         Name = "Finish Captain Race",
         Callback = function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Models.LockerRoomA.FinishLine.CFrame + Vector3.new(0, 2, 0)
         end
      })
-     
-     local Button = Tab:CreateButton({
-        Name = "Remove Uniform",
-        Callback = function()
-            for i, v in pairs(game.workspace:GetDescendants()) do
-                if v:IsA("Model") and v.Parent.Name == game.Players.LocalPlayer.Name and v.Name == "Uniform" then
-                v:Destroy()
-                end
-            end
-        end
-     })
 
-
-     
-     local track = nil
-    
-     local Toggle = Tab:CreateToggle({
+local Toggle = Tab:CreateToggle({
         Name = "Underground",
         CurrentValue = false,
         Flag = "Toggasfsle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -864,6 +778,30 @@ local ColorPicker = Tab:CreateColorPicker({
             end
     end
      })
+
+	
+    local Tab = Window:CreateTab("Visuals") -- Title, Image
+
+     local Section = Tab:CreateSection("Features")
+
+     
+     
+     local Button = Tab:CreateButton({
+        Name = "Remove Uniform",
+        Callback = function()
+            for i, v in pairs(game.workspace:GetDescendants()) do
+                if v:IsA("Model") and v.Parent.Name == game.Players.LocalPlayer.Name and v.Name == "Uniform" then
+                v:Destroy()
+                end
+            end
+        end
+     })
+
+
+     
+     local track = nil
+    
+     
 
 local Button = Tab:CreateButton({
 	Name = "Chat Spy",
