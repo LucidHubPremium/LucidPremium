@@ -454,10 +454,9 @@ local delay = 0
 local catchdelay = 0
 
 local tab1 = window:CreateTab("Catching", 80373024)
-local tab2 = window:CreateTab("QB", 80373024)
-local tab3 = window:CreateTab("Defense", 80373024)
+local tab2  = window:CreateTab("Player", 80373024)
+local tab3 = window:CreateTab("Trolling", 80373024)
 local tab4 = window:CreateTab("Visuals", 80373024)
-local tab5 = window:CreateTab("Trolling", 80373024)
 
 
 local Velocity hub = {
@@ -470,8 +469,88 @@ blockslider = 1.5,
 
 
 
+
 tab1:CreateToggle({
-   Name = "Fake Boost (Jump twice)",
+	Name = "Mags",
+  CurrentValue = false,
+	Callback = function()
+		-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local TextButton = Instance.new("TextButton")
+
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.Position = UDim2.new(0.231448919, 0, 0.220385626, 0)
+Frame.Size = UDim2.new(0, 0, 0, 0)
+Frame.Active = true
+Frame.Draggable = true
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.Size = UDim2.new(0, 251, 0, 50)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "Football duels ball mag"
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextSize = 30.000
+
+
+TextButton.Parent = Frame
+TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.Position = UDim2.new(0.10000000, 0, 0.00010000, 0)
+TextButton.Size = UDim2.new(0, 250, 0, 50)
+TextButton.Font = Enum.Font.SourceSans
+TextButton.Text = "Silent Mag"
+TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.TextSize = 50.000
+--PASTE THE SCRIPT BELOW UNDER THE BUTTON.
+
+
+TextButton.MouseButton1Down:connect(function()
+    local plr = game.Players.LocalPlayer
+    local rs = game:GetService("RunService")
+
+    function magBall(ball)
+        if ball and plr.Character then
+            local leftArm = plr.Character:FindFirstChild("Left Arm")
+            if leftArm then
+                firetouchinterest(leftArm, ball, 0)
+                task.wait()
+                firetouchinterest(leftArm, ball, 1)
+            end
+        end
+    end
+
+    rs.Heartbeat:Connect(function()
+        local footballs = workspace:FindPartsInRegion3(Region3.new(plr.Character.HumanoidRootPart.Position - Vector3.new(50, 50, 50), plr.Character.HumanoidRootPart.Position + Vector3.new(50, 50, 50)), nil, math.huge)
+        for _, football in ipairs(footballs) do
+            if football.Name == "Football" and football:IsA("BasePart") and (football.Position - plr.Character.HumanoidRootPart.Position).Magnitude < 50 then
+                magBall(football)
+            end
+        end
+    end)
+end)
+		end,
+})
+
+-----
+
+
+
+
+
+
+       tab2:CreateToggle({
+   Name = "Double Jump",
    CurrentValue = false,
    Callback = function(Value)
    		
@@ -502,98 +581,79 @@ end
    end,
 })
 
-tab1:CreateToggle({
-	Name = "High Angle",
-  CurrentValue = false,
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
+tab2:CreateToggle({
+   Name = "Jump Power",
+   CurrentValue = false,
+   Callback = function(Value)
+    local p = game.Players.LocalPlayer.Character.HumanoidRootPart
+local yeah_this_is_yeah = Instance.new("BodyForce")
+yeah_this_is_yeah.Parent = p
+yeah_this_is_yeah.Force = Vector3.new(0, 2020, 0)
+		end,
+	})
+
+
+tab2:CreateToggle({
+   Name = "Walkspeed",
+   CurrentValue = false,
+   Callback = function(Value)
+    lp = game.Players.LocalPlayer
+UIS = game:GetService("UserInputService")
+
+
+repeat
+wait(0.1)
+until lp.Character:FindFirstChild('HumanoidRootPart')
+
+local speed = CFrame.new(0,0,0)
+local lastpos = lp.Character.HumanoidRootPart.Position
+
+
+while true do
+if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
+speed = lp.Character.HumanoidRootPart.Position - lastpos
+if speed.Y < 0 then
+speed = speed - Vector3.new(0, speed.Y, 0)
+end
+lp.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame + (speed/2)
+lastpos = lp.Character.HumanoidRootPart.Position
+end
+wait(0.1)
+end
+		end,
+	})
+
+     
+
+	tab2:CreateToggle({
+   Name = "Noclip",
+   CurrentValue = false,
+   Callback = function(Value)
+    local Noclip = nil
+local Clip = nil
+
+function noclip()
+	Clip = false
+	local function Nocl()
+		if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+			for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+				if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+					v.CanCollide = false
+				end
+			end
+		end
+		wait(0.21) -- basic optimization
+	end
+	Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+
+function clip()
+	if Noclip then Noclip:Disconnect() end
+	Clip = true
+end
+
+noclip() -- to toggle noclip() and clip()
 	end,
 })
-
------
-
-
-
-
-
-
-        tab4:CreateToggle({
-        Name = "Finish Captain Race",
-        CurrentValue = false,
-        Callback = function()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Models.LockerRoomA.FinishLine.CFrame + Vector3.new(0, 2, 0)
-        end
-     })
-     
-     
-
-     
-     local track = nil
-    
-    
-
-  tab4:CreateToggle({
-	Name = "Chat Spy",
-  CurrentValue = false,
-	Callback = function()
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid-Premium-ChatSpy.lua'))()
-	end,
-})
-
-  
-  tab4:CreateToggle({
-        Name = "Remove Uniform",
-        CurrentValue = false,
-        Callback = function()
-            for i, v in pairs(game.workspace:GetDescendants()) do
-                if v:IsA("Model") and v.Parent.Name == game.Players.LocalPlayer.Name and v.Name == "Uniform" then
-                v:Destroy()
-                end
-            end
-        end
-     })
-
-  tab4:CreateToggle({
-	Name = "Rainbow Chat",
-  CurrentValue = false,
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-2/main/RGB%20Bubble%20chat.Lua"))()
-	end,
-})
-
-tab5:CreateToggle({
-        Name = "Underground",
-        CurrentValue = false,
-        Callback = function(Value)
-            if Value then
-                local Anim = Instance.new("Animation")
-                Anim.AnimationId = "rbxassetid://182724289"
-                track = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
-                track:Play(.1, 1, 1)
-            local part = Instance.new("Part")
-            part.Size = Vector3.new(500, 0.001, 500)
-            part.CFrame = CFrame.new(Vector3.new(10.3562937, -1.51527438, 30.4708614))
-            part.Anchored = true
-            part.Parent = game.Workspace
-            
-            local model = game:GetService("Workspace").Models.Field.Grass
-            for _, part in pairs(model:GetDescendants()) do
-            if part:IsA("BasePart") then
-            part.CanCollide = false
-            part.Transparency = .5
-            end
-            end
-            else 
-                track:Stop()
-                local model = game:GetService("Workspace").Models.Field.Grass
-                for _, part in pairs(model:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Transparency = 0
-                part.CanCollide = true
-            end
-                end
-            end
-    end
-     })
 
 
