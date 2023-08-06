@@ -455,23 +455,20 @@ local catchdelay = 0
 
 local tab1 = window:CreateTab("Catching", 80373024)
 local tab2  = window:CreateTab("Player", 80373024)
-local tab3 = window:CreateTab("Trolling", 80373024)
+local tab3 = window:CreateTab("Tween", 80373024)
 local tab4 = window:CreateTab("Visuals", 80373024)
 
 
 local Velocity hub = {
 block = true,
 blockslider = 1.5,
+blatoggle = true,
+blatant = 0,
 }
 
 
-
-
-
-
-
 tab1:CreateToggle({
-	Name = "Mags",
+	Name = "Mag Script",
   CurrentValue = false,
 	Callback = function()
 		-- Gui to Lua
@@ -541,6 +538,100 @@ TextButton.MouseButton1Down:connect(function()
 end)
 		end,
 })
+
+tab1:CreateSlider({
+Name = "Mag Range",
+       Range = {0, 60},
+       Increment = 0.1,
+       Suffix = "Range",
+       CurrentValue = 0,
+       Callback = function(Value)
+if blatoggle == true then
+           blatant = Value
+           else
+               if blatoggle == false then
+                   blatant = 0
+            end
+        end
+    end
+	})	
+
+tab1:CreateToggle({
+   Name = "Legit Pull Vector",
+   CurrentValue = false,
+   Callback = function(Value)
+	local plr = game.Players.LocalPlayer
+
+local function teleportToFootball()
+    wait()
+    local character = plr.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local football = game:GetService("Workspace")["Balls_Kickz"].Football
+        if football then
+            local distance = (football.Position - character.HumanoidRootPart.Position).Magnitude
+            if distance <= 40 then
+                character.HumanoidRootPart.CFrame = CFrame.new(football.Position)
+            end
+        end
+    end
+end
+
+while wait(1) do
+    teleportToFootball()
+end
+end
+
+	})
+
+
+
+
+tab1:CreateToggle({
+   Name = "Blatant Pull Vector",
+   CurrentValue = false,
+   Callback = function(Value)
+	local plr = game.Players.LocalPlayer		
+local function teleportToFootball()
+    wait()
+    local character = plr.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local football = game:GetService("Workspace")["Balls_Kickz"].Football
+        if football then
+            local distance = (football.Position - character.HumanoidRootPart.Position).Magnitude
+            if distance <= 40 then
+                character.HumanoidRootPart.CFrame = CFrame.new(football.Position)
+            end
+        end
+    end
+end
+
+while wait() do
+    teleportToFootball()
+end
+end
+	
+})
+
+
+
+tab1:CreateToggle({
+   Name = "Auto Catch (V to Disable/Enable)",
+   CurrentValue = false,
+   Callback = function(Value)
+   		
+       getgenv().Settings = {
+    ["Auto Click Keybind"] = "V", -- Use an UpperCase letter or KeyCode Enum. Ex: Enum.KeyCode.Semicolon
+    ["Lock Mouse Position Keybind"] = "B",
+    ["Right Click"] = false,
+    ["GUI"] = true, -- A drawing gui that tells you what is going on with the autoclicker.
+    ["Delay"] = 0 -- 0 for RenderStepped, other numbers go to regular wait timings.
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BimbusCoder/Script/main/Auto%20Clicker.lua"))()
+   end,
+})
+
+
+
 
 -----
 
@@ -657,3 +748,101 @@ noclip() -- to toggle noclip() and clip()
 })
 
 
+
+tab2:CreateToggle({
+   Name = "F to TP",
+   CurrentValue = false,
+   Callback = function(Value)
+	local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    
+    local distance = 10
+    local duration = 0.5
+    
+    local isTweening = false
+    
+    local function onInputBegan(input, gameProcessed)
+        if not gameProcessed and input.KeyCode == Enum.KeyCode.F and not isTweening then
+            isTweening = true
+            local endPos = humanoidRootPart.CFrame * CFrame.new(0, 0, -distance)
+            local tween = game:GetService("TweenService"):Create(humanoidRootPart, TweenInfo.new(duration), {CFrame = endPos})
+            tween:Play()
+            tween.Completed:Wait()
+            isTweening = false
+        end
+    end
+    
+    game:GetService("UserInputService").InputBegan:Connect(onInputBegan) 
+    end
+
+	
+})
+
+
+tab3:CreateToggle({
+   Name = "Elimination",
+   CurrentValue = false,
+   Callback = function(Value)
+   local plr = game.Players.LocalPlayer
+    
+    local tweenDuration = 1
+    local endCFrame = game:GetService("Workspace").ElimTP.CFrame
+    
+    local function tweenToElimPosition()
+        local character = plr.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local tween = game:GetService("TweenService"):Create(character.HumanoidRootPart, TweenInfo.new(tweenDuration), {CFrame = endCFrame})
+            tween:Play()
+        end
+    end
+    
+    tweenToElimPosition()
+    end
+})
+
+
+tab4:CreateToggle({
+          Name = "FPS Booster",
+         CurrentValue = false,
+         Callback = function(v)
+                    local decalsyeeted = true -- Leaving this on makes games look shitty but the fps goes up by at least 20.
+    local g = game
+    local w = g.Workspace
+    local l = g.Lighting
+    local t = w.Terrain
+    t.WaterWaveSize = 0
+    t.WaterWaveSpeed = 0
+    t.WaterReflectance = 0
+    t.WaterTransparency = 0
+    l.GlobalShadows = false
+    l.FogEnd = 9e9
+    l.Brightness = 0
+    settings().Rendering.QualityLevel = "Level01"
+    for i, v in pairs(g:GetDescendants()) do
+        if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
+            v.Material = "Plastic"
+            v.Reflectance = 0
+        elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
+            v.Transparency = 1
+        elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+            v.Lifetime = NumberRange.new(0)
+        elseif v:IsA("Explosion") then
+            v.BlastPressure = 1
+            v.BlastRadius = 1
+        elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") then
+            v.Enabled = false
+        elseif v:IsA("MeshPart") then
+            v.Material = "Plastic"
+            v.Reflectance = 0
+            v.TextureID = 10385902758728957
+        end
+    end
+    for i, e in pairs(l:GetChildren()) do
+        if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+            e.Enabled = false
+        end
+    end
+                end,
+            })
+		
