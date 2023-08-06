@@ -447,7 +447,7 @@ end
 local window = relinquish:CreateWindow({
 	LoadingTitle = "Lucid Premium";
 	LoadingDescription = "";
-	Title = "Lucid | FF2"
+	Title = "Lucid Premium"
 })
 
 local delay = 0
