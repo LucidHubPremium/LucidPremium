@@ -679,7 +679,7 @@ tab2:CreateToggle({
     local p = game.Players.LocalPlayer.Character.HumanoidRootPart
 local yeah_this_is_yeah = Instance.new("BodyForce")
 yeah_this_is_yeah.Parent = p
-yeah_this_is_yeah.Force = Vector3.new(0, 2020, 0)
+yeah_this_is_yeah.Force = Vector3.new(0, 2018, 0)
 		end,
 	})
 
