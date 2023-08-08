@@ -1543,7 +1543,7 @@ task.spawn(function()
     end
 end)
 
-Library:SetTitle("WiiHub")
+Library:SetTitle("Lucid")
 Library:SetFooter("Welcome, "..(plr.DisplayName or plr.Name))
 
                                     -- Start
@@ -1555,14 +1555,14 @@ Library:SetFooter("Welcome, "..(plr.DisplayName or plr.Name))
                                     Library:SetTitle("WiiHub")
                                     Library:SetFooter("Welcome, "..(plr.DisplayName or plr.Name))
                                     
-                                    local t1 = Library:NewTab("Catching")
+                                    local t1 = Library:NewTab("Catching/Physics")
                                     local t2 = Library:NewTab("QB")
-                                    local t3 = Library:NewTab("Physics")
-                                    local t4 = Library:NewTab("Defense")
-                                    local t5 = Library:NewTab("Trolling")
-                                    local t6 = Library:NewTab("Visuals")
                                     
-				    t1:NewToggle("Universal Mags", false, function(v)
+                                    local t4 = Library:NewTab("Visuals")
+                                   
+                                   
+                                    
+				    t1:NewToggle("Adjustable Mags", false, function(v)
                                         tooggleEnabled = v
                                         while tooggleEnabled == true do
                                             task.wait()
@@ -1570,7 +1570,7 @@ Library:SetFooter("Welcome, "..(plr.DisplayName or plr.Name))
                                         end
                                     end)
                                     
-                                    t1:NewSlider("Universal Range", .1, 30, 0, function(v)
+                                    t1:NewSlider("Mag Distance", .1, 30, 0, function(v)
                                         universal = v
                                     end)
 
@@ -1584,7 +1584,7 @@ Library:SetFooter("Welcome, "..(plr.DisplayName or plr.Name))
 
                                     -- Physics
 
-                                    t3:NewToggle("Football Landing Predictions", false, function(v)
+                                    t2:NewToggle("Football Predictions", false, function(v)
                                         if v and not toggleActive then
                                             toggleActive = true
                                             eventConnection = workspace.ChildAdded:Connect(function(b)
@@ -1706,7 +1706,7 @@ end
 
 player.CharacterAdded:Connect(updateCharacter)
 
-t4:NewToggle("Swat Reach", swatreachmain, function(value)
+t1:NewToggle("Swat Reach", swatreachmain, function(value)
     swatreachmain = value
     if value then
         updateCharacter(player.Character) 
@@ -1754,84 +1754,27 @@ local autoswatv = 0
     end
 end
 
-t4:NewToggle("Auto Swat", false, function(v)
+t1:NewToggle("Auto Swat", false, function(v)
     enabledd = v
     autoswatfunction()
 end)
 
-t4:NewSlider("Auto Swat Range", 1, 45, 0, function(v)
+t1:NewSlider("Auto Swat Range", 1, 45, 0, function(v)
     autoswatv = v
 end)
 
 
 
-t5:NewToggle("Infinite Jump", false, function(v)
-    --Toggles the infinite jump between on or off on every script run
-_G.infinjump = not _G.infinjump
-
-if _G.infinJumpStarted == nil then
-    --Ensures this only runs once to save resources
-    _G.infinJumpStarted = true
-    
-    --Notifies readiness
-    game.StarterGui:SetCore("SendNotification", {Title="Lucid Premium"; Text="Infinite Jump Activated!"; Duration=5;})
-
-    --The actual infinite jump
-    local plr = game:GetService('Players').LocalPlayer
-    local m = plr:GetMouse()
-    m.KeyDown:connect(function(k)
-        if _G.infinjump then
-            if k:byte() == 32  then
-            humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
-            humanoid:ChangeState('Jumping')
-            wait()
-            humanoid:ChangeState('Seated')
-            end
-        end
-    end)
-end
-   end)
 
 
 
-t5:NewToggle("ChatSpy", false, function()
+t4:NewToggle("ChatSpy", false, function(v)
+enabledd = v
 loadstring(game:HttpGet('https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid-Premium-ChatSpy.lua'))()
 	end)
 
 
-t5:NewToggle("Underground", false, function(Value)
-if Value then
-                local Anim = Instance.new("Animation")
-                Anim.AnimationId = "rbxassetid://182724289"
-                track = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
-                track:Play(.1, 1, 1)
-            local part = Instance.new("Part")
-            part.Size = Vector3.new(500, 0.001, 500)
-            part.CFrame = CFrame.new(Vector3.new(10.3562937, -1.51527438, 30.4708614))
-            part.Anchored = true
-            part.Parent = game.Workspace
-            
-            local model = game:GetService("Workspace").Models.Field.Grass
-            for _, part in pairs(model:GetDescendants()) do
-            if part:IsA("BasePart") then
-            part.CanCollide = false
-            part.Transparency = .5
-            end
-            end
-            else 
-                track:Stop()
-                local model = game:GetService("Workspace").Models.Field.Grass
-                for _, part in pairs(model:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Transparency = 0
-                part.CanCollide = true
-            end
-                end
-            end
-    end)
+
+	
 
 
-
-t6:NewToggle("ChatSpy", false, function()
-loadstring(game:HttpGet('https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid-Premium-ChatSpy.lua'))()
-	end)
