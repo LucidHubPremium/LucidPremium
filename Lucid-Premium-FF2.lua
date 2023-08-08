@@ -105,50 +105,14 @@ coroutine.wrap(handleMagnets)()
 
  local Label = Tab:CreateLabel("Welcome to Lucid, "..game.Players.LocalPlayer.DisplayName)
 
-local Section = Tab:CreateSection("Custom")
-
-local Toggle = MainTab:CreateToggle({
-    Name = "Custom Magnets",
-    CurrentValue = false,
-    Flag = "Toggle2", 
-    Callback = function(v)
-        enabled = v
-        enable()
-    end,
- })
 
 
- local Slider = MainTab:CreateSlider({
-    Name = "Custom Magnets Distance",
-    Range = {10, 30},
-    Increment = 30,
-    Suffix = "Distance",
-    CurrentValue = 10,
-    Flag = "Slider1", 
-    Callback = function(v)
-    regdelay = v
-    end,
- })
+
+ local Section = Tab:CreateSection("Mags")
 
 
- local Slider = MainTab:CreateSlider({
-    Name = "Custom Delay",
-    Range = {0, 1},
-    Increment = 0.001,
-    Suffix = "Delay",
-    CurrentValue = 0,
-    Flag = "Slider1", 
-    Callback = function(v)
-    regdelay = v
-    end,
- })
-
-
- local Section = MainTab:CreateSection("Mags")
-
-
- local Toggle = MainTab:CreateToggle({
-    Name = "Football Magnets",
+ local Toggle = Tab:CreateToggle({
+    Name = "Customizable Mags",
     CurrentValue = false,
     Flag = "Toggle1", 
     Callback = function(enabled)
@@ -156,8 +120,8 @@ local Toggle = MainTab:CreateToggle({
     end,
  })
 
- local Slider = MainTab:CreateSlider({
-    Name = "Magnet Distace",
+ local Slider = Tab:CreateSlider({
+    Name = "Mag Range",
     Range = {10, 30},
     Increment = 0.01,
     Suffix = "Distance",
@@ -170,7 +134,7 @@ local Toggle = MainTab:CreateToggle({
 
 
 
- local Dropdown = MainTab:CreateDropdown({
+ local Dropdown = Tab:CreateDropdown({
     Name = "Mag Type",
     Options = {"Regular","Blatant","League"},
     CurrentOption = {"Football Magnets"},
@@ -181,9 +145,9 @@ local Toggle = MainTab:CreateToggle({
     end,
  })
 
+local Section = Tab:CreateSection("Other")
 
-
-			local Toggle = MainTab:CreateToggle({
+local Toggle = Tab:CreateToggle({
    Name = "Fake Boost (Jump twice)",
    CurrentValue = false,
    Flag = "Toggle",
@@ -216,7 +180,7 @@ end
    end,
 })
 
-local Button = MainTab:CreateButton({
+local Button = Tab:CreateButton({
 	Name = "High Angle",
 	Callback = function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
