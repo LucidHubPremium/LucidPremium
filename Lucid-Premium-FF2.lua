@@ -39,28 +39,151 @@ local Window = ArrayField:CreateWindow({
      autocatchv = 0,
     }
 
-local MainTab = Window:CreateTab("Catching", nil) -- Title, Image
-local MainSection = MainTab:CreateSection("Catching Features")
+local blatant = 0
+   local universal = 0
 
-Window:Prompt({
-    Title = 'Authentication',
-    SubTitle = 'Success',
-    Content = 'Welcome to Lucid Premium FF2!',
-    Actions = {
-        Accept = {
-            Name = 'Accept',
-            Callback = function()
-                print('Pressed')
-            end,
-        }
-    }
-})
+-- Functions
 
----
-    
-   
+
+local player = game.Players.LocalPlayer
+local hum = player.Character.HumanoidRootPart
+local mags = false
+local dist = 30
+local workspace = game.Workspace
+
+
+local function handleMagnets()
+    while true do
+        task.spawn(function()
+            while mags do
+                wait()
+                local football = workspace:WaitForChild("Football")
+                for index, v in pairs(workspace:GetChildren()) do
+                    if v.Name == "Football" and v:IsA("BasePart") then
+                        local magnitude = (v.Position - hum.Position).magnitude
+                        if magnitude <= dist and not v:IsDescendantOf(game.Players) then
+                            firetouchinterest(player.Character:WaitForChild("CatchLeft"), v, 0)
+                            firetouchinterest(player.Character:WaitForChild("CatchRight"), v, 0)
+                            task.wait()
+                            firetouchinterest(player.Character:WaitForChild("CatchLeft"), v, 1)
+                            firetouchinterest(player.Character:WaitForChild("CatchRight"), v, 1)
+                        end
+                    end
+                end
+            end
+        end)
+        wait()
+    end
+end
+
+local regdist = 30
+local regdelay = 0
+-- Functions
+
+local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+local enabled = false
+
+function enable()
+    while enabled do
+        wait(regdelay)
+        for i, v in pairs(workspace:GetChildren()) do
+            if v.Name == "Football" and v:IsA("BasePart") then
+                local distance = (v.Position - hrp.Position).magnitude
+                if distance <= regdist then
+                    local catchRight = game.Players.LocalPlayer.Character.CatchRight
+                    v.CFrame = catchRight.CFrame + Vector3.new(1, 1, 1)
+                end
+            end
+        end
+    end
+end
+
+
+coroutine.wrap(handleMagnets)()
+
+ local Tab = Window:CreateTab("Catching")
+
+ local Label = Tab:CreateLabel("Welcome to Lucid, "..game.Players.LocalPlayer.DisplayName)
+
+local Section = Tab:CreateSection("Custom")
 
 local Toggle = MainTab:CreateToggle({
+    Name = "Custom Magnets",
+    CurrentValue = false,
+    Flag = "Toggle2", 
+    Callback = function(v)
+        enabled = v
+        enable()
+    end,
+ })
+
+
+ local Slider = MainTab:CreateSlider({
+    Name = "Custom Magnets Distance",
+    Range = {10, 30},
+    Increment = 30,
+    Suffix = "Distance",
+    CurrentValue = 10,
+    Flag = "Slider1", 
+    Callback = function(v)
+    regdelay = v
+    end,
+ })
+
+
+ local Slider = MainTab:CreateSlider({
+    Name = "Custom Delay",
+    Range = {0, 1},
+    Increment = 0.001,
+    Suffix = "Delay",
+    CurrentValue = 0,
+    Flag = "Slider1", 
+    Callback = function(v)
+    regdelay = v
+    end,
+ })
+
+
+ local Section = MainTab:CreateSection("Mags")
+
+
+ local Toggle = MainTab:CreateToggle({
+    Name = "Football Magnets",
+    CurrentValue = false,
+    Flag = "Toggle1", 
+    Callback = function(enabled)
+    mags = enabled
+    end,
+ })
+
+ local Slider = MainTab:CreateSlider({
+    Name = "Magnet Distace",
+    Range = {10, 30},
+    Increment = 0.01,
+    Suffix = "Distance",
+    CurrentValue = 10,
+    Flag = "Slider1", 
+    Callback = function(value)
+    dist = value
+    end,
+ }) 
+
+
+
+ local Dropdown = MainTab:CreateDropdown({
+    Name = "Mag Type",
+    Options = {"Regular","Blatant","League"},
+    CurrentOption = {"Football Magnets"},
+    MultipleOptions = false,
+    Flag = "Dropdown1", 
+    Callback = function(Option)
+    print("Mag type chosen")
+    end,
+ })
+
+
+
+			local Toggle = MainTab:CreateToggle({
    Name = "Fake Boost (Jump twice)",
    CurrentValue = false,
    Flag = "Toggle",
