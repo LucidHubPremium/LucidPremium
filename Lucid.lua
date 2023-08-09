@@ -233,36 +233,7 @@ tab:Button("Auto Captain", function()
 
 local tab = win:Tab("Trolling")
 
-tab:Toggle("Underground", false, function(Value)
-    if Value then
-                local Anim = Instance.new("Animation")
-                Anim.AnimationId = "rbxassetid://182724289"
-                track = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
-                track:Play(.1, 1, 1)
-            local part = Instance.new("Part")
-            part.Size = Vector3.new(500, 0.001, 500)
-            part.CFrame = CFrame.new(Vector3.new(10.3562937, -1.51527438, 30.4708614))
-            part.Anchored = true
-            part.Parent = game.Workspace
-            
-            local model = game:GetService("Workspace").Models.Field.Grass
-            for _, part in pairs(model:GetDescendants()) do
-            if part:IsA("BasePart") then
-            part.CanCollide = false
-            part.Transparency = .5
-            end
-            end
-            else 
-                track:Stop()
-                local model = game:GetService("Workspace").Models.Field.Grass
-                for _, part in pairs(model:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Transparency = 0
-                part.CanCollide = true
-            end
-                end
-            end
-    end)
+
 
 
 
