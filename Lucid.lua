@@ -189,6 +189,416 @@ elseif _G.CheckingTool == false then
 end
 end)
 
+
+local tab = win:Tab("QB")
+
+
+
+local Players = game:GetService("Players")
+local Mouse = Players.LocalPlayer:GetMouse()
+local numTeleports = 30 -- Define the number of teleports
+local tooggleEnabled = false -- Variable to track the toggle state
+
+local function universalcatch()
+    if tooggleEnabled then
+    local catchRight = Players.LocalPlayer.Character:FindFirstChild("CatchRight")
+
+    if not catchRight then
+        return
+    end
+
+    local closestFootball = nil
+    local closestDistance = math.huge
+
+    for i, v in pairs(game.Workspace:GetDescendants()) do
+        if v.Name == "Football" and v:IsA("BasePart") then
+            local distance = (v.Position - catchRight.Position).Magnitude
+            if distance < closestDistance and distance <= universal then
+                v.CanCollide = false
+                closestDistance = distance
+                closestFootball = v
+            end
+        end
+    end
+    
+    if closestFootball then
+        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
+        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
+        task.wait()
+        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
+        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
+            wait()
+            end
+        end
+    end
+
+local function beamProjectile(g, v0, x0, t1)
+    -- calculate the bezier points
+    local c = 0.5 * 0.5 * 0.5;
+    local p3 = 0.5 * g * t1 * t1 + v0 * t1 + x0;
+    local p2 = p3 - (g * t1 * t1 + v0 * t1) / 3;
+    local p1 = (c * g * t1 * t1 + 0.5 * v0 * t1 + x0 - c * (x0 + p3)) / (3 * c) - p2;
+
+    -- the curve sizes
+    local curve0 = (p1 - x0).magnitude;
+    local curve1 = (p2 - p3).magnitude;
+
+    -- build the world CFrames for the attachments
+    local b = (x0 - p3).unit;
+    local r1 = (p1 - x0).unit;
+    local u1 = r1:Cross(b).unit;
+    local r2 = (p2 - p3).unit;
+    local u2 = r2:Cross(b).unit;
+    b = u1:Cross(r1).unit;
+
+    local cf1 = CFrame.new(
+        x0.x, x0.y, x0.z,
+        r1.x, u1.x, b.x,
+        r1.y, u1.y, b.y,
+        r1.z, u1.z, b.z
+    )
+
+    local cf2 = CFrame.new(
+        p3.x, p3.y, p3.z,
+        r2.x, u2.x, b.x,
+        r2.y, u2.y, b.y,
+        r2.z, u2.z, b.z
+    )
+
+    return curve0, -curve1, cf1, cf2;
+end
+
+local enabled = false
+local leadDistance = 10
+task.spawn(function()
+    --// qb gui initalization
+    local gui; do
+
+        local WiiGenCards = Instance.new("ScreenGui")
+        local AngleCard = Instance.new("Frame")
+        local AngleLabel = Instance.new("TextLabel")
+        local UIGradient = Instance.new("UIGradient")
+        local AngleNumber = Instance.new("TextLabel")
+        local UICorner = Instance.new("UICorner")
+    
+        --Properties:
+    
+        WiiGenCards.Name = "WiiGenCards"
+        WiiGenCards.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    
+        AngleCard.Name = "AngleCard"
+        AngleCard.Parent = WiiGenCards
+        AngleCard.BackgroundColor3 = Color3.fromRGB(66, 135, 245)
+        AngleCard.BackgroundTransparency = 0.100
+        AngleCard.Position = UDim2.new(0.465230167, 0, 0.134912729, 0)
+        AngleCard.Size = UDim2.new(0, 100, 0, 100)
+    
+        AngleLabel.Name = "AngleLabel"
+        AngleLabel.Parent = AngleCard
+        AngleLabel.BackgroundColor3 = Color3.fromRGB(66, 135, 245)
+        AngleLabel.BackgroundTransparency = 1.000
+        AngleLabel.BorderSizePixel = 0
+        AngleLabel.Position = UDim2.new(0.049999997, 0, 0.5, 0)
+        AngleLabel.Size = UDim2.new(0, 90, 0, 50)
+        AngleLabel.SizeConstraint = Enum.SizeConstraint.RelativeXX
+        AngleLabel.ZIndex = 3
+        AngleLabel.Font = Enum.Font.GothamBold
+        AngleLabel.Text = "Angle"
+        AngleLabel.TextColor3 = Color3.fromRGB(66, 135, 245)
+        AngleLabel.TextScaled = true
+        AngleLabel.TextSize = 14.000
+        AngleLabel.TextWrapped = true
+    
+        UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(79, 155, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(45, 55, 69))}
+        UIGradient.Rotation = 31
+        UIGradient.Parent = AngleLabel
+    
+        AngleNumber.Name = "AngleNumber"
+        AngleNumber.Parent = AngleCard
+        AngleNumber.BackgroundColor3 = Color3.fromRGB(66, 135, 245)
+        AngleNumber.BackgroundTransparency = 1.000
+        AngleNumber.BorderSizePixel = 0
+        AngleNumber.Position = UDim2.new(0.049999997, 0, 0.159999996, 0)
+        AngleNumber.Size = UDim2.new(0, 90, 0, 50)
+        AngleNumber.SizeConstraint = Enum.SizeConstraint.RelativeXX
+        AngleNumber.ZIndex = 3
+        AngleNumber.Font = Enum.Font.GothamBold
+        AngleNumber.Text = "45"
+        AngleNumber.TextColor3 = Color3.fromRGB(66, 135, 245)
+        AngleNumber.TextScaled = true
+        AngleNumber.TextSize = 14.000
+        AngleNumber.TextWrapped = true
+    
+        UICorner.CornerRadius = UDim.new(0.100000001, 0)
+        UICorner.Parent = AngleCard
+        
+        gui = WiiGenCards
+    end
+    --// main
+
+    local players = game:GetService("Players")
+    local runService = game:GetService("RunService")
+    local userInputService = game:GetService("UserInputService")
+    local replicatedStorage = game:GetService("ReplicatedStorage")
+    local player = players.LocalPlayer
+    local angle = 40
+    local target = nil
+    local locked = false
+    local realpower = 0
+    local camera = workspace.CurrentCamera
+    local highlight = Instance.new("Highlight")
+    local sphere = Instance.new("Part")
+    local upower, udirection = 0, Vector3.new(0, 0, 0)
+    local mouse = loadstring(game:HttpGet("https://raw.githubusercontent.com/devdoroz/better-roblox-mouse/main/main.lua"))()
+    local mouseRaycastParams = RaycastParams.new()	
+    local usePart = Instance.new("Part")
+    usePart.Anchored = true
+    usePart.CanCollide = false
+    usePart.Size = Vector3.new(2048, 1, 2048)
+    usePart.Transparency = 1
+    usePart.Parent = workspace
+    usePart.Position = player.Character.HumanoidRootPart.Position - Vector3.new(0, 2, 0)
+    mouseRaycastParams.FilterType = Enum.RaycastFilterType.Include
+    mouseRaycastParams.FilterDescendantsInstances = {usePart}
+    mouse:SetRaycastParams(mouseRaycastParams)
+
+    local function getMoveDirection(target)
+        if players:GetPlayerFromCharacter(target) then
+            return target.Humanoid.MoveDirection
+        else
+            return (target.Humanoid.WalkToPoint - target.Head.Position).Unit
+        end
+    end
+
+    local function findPower(pos)
+        local powerTable = {
+            [10] = 55,
+            [20] = 60,
+            [30] = 65,
+            [35] = 70,
+            [40] = 75,
+            [50] = 80,
+            [60] = 85,
+            [70] = 90,
+            [80] = 95,
+        }
+        local distance = (player.Character.Head.Position - pos).Magnitude
+        local lDiff = math.huge
+        local power = 0
+        local pdistance = nil
+        local reachedDis = 0
+        local nextDis = 0
+        local naturalPower = 0
+        for dis, pwr in pairs(powerTable) do
+            dis *= 3
+            if distance > dis and dis > reachedDis then
+                power = pwr
+                naturalPower = pwr
+                pdistance = dis
+                reachedDis = dis
+                if dis == 90 then nextDis = dis + 15 else nextDis = dis + 30 end
+            end
+        end
+        local diff = math.clamp(nextDis - distance, 0, math.huge)
+        local required = (nextDis - reachedDis)
+        local nextPower = powerTable[nextDis / 3] or 75
+        local percentage = diff / required
+        --print(diff, required, nextPower, power, percentage, (nextPower - power) - ((nextPower - power) * percentage))
+        power += math.clamp((nextPower - power) - ((nextPower - power) * percentage), 0, 100)
+        if power ~= power then
+            power = 50
+        end
+        return power - 5, naturalPower - 5
+    end
+
+    local function calculateVelocity(x0, d0, t)
+        local g = Vector3.new(0, -28, 0)
+        local v0 = (d0 - x0 - 0.5*g*t*t)/t;
+        local dir = ((x0 + v0) - x0).Unit
+        local power = v0.Y / dir.Y
+        return v0, dir, power
+    end
+
+    local function findtarget()
+        local np = nil
+        local nm = math.huge
+        local s = {workspace}
+        if workspace:FindFirstChild("npcwr") then
+            table.insert(s, workspace.npcwr.a)
+            table.insert(s, workspace.npcwr.b)
+        end
+        for i, p in pairs(s) do
+            for i, c in pairs(p:GetChildren()) do
+                if c:FindFirstChildWhichIsA("Humanoid") and c:FindFirstChild("HumanoidRootPart") then
+                    local plr = players:GetPlayerFromCharacter(c)
+                    if plr == player then continue end
+                    if not plr and game.PlaceId ~= 8206123457 then continue end
+                    if not player.Neutral then
+                        if plr.Team ~= player.Team then
+                            continue
+                        end
+                    end
+                    local d = (c.HumanoidRootPart.Position - mouse.Hit.Position).Magnitude
+                    if d < nm then
+                        nm = d
+                        np = c
+                    end	
+                end
+            end
+        end
+        return np
+    end
+
+    local function methodIsA(self, method)
+        return string.lower(self) == string.lower(method)
+    end
+
+    local remotes = {Fake = {}}
+
+    local function spoofRemote(remote, funcOnFire)
+        local fakeSelf = remote:Clone()
+        fakeSelf.Parent = remote.Parent
+        remote.Name = ""
+        remotes[remote] = funcOnFire
+        remotes.Fake[fakeSelf] = remote
+    end
+
+    local __namecall; __namecall = hookmetamethod(game, "__namecall", function(self, ...)
+        local method = getnamecallmethod()
+        if methodIsA(method, "FireServer") and not checkcaller() and remotes.Fake[self]  then
+            remotes.Fake[self]:FireServer(remotes[remotes.Fake[self]](...))
+        end
+        return __namecall(self, ...)
+    end)
+
+    local function hookFootball(fb)
+        local ls = fb.Handle:WaitForChild("LocalScript", 1)
+        if ls then
+            ls.Enabled = false
+            local remoteEvent = fb.Handle:FindFirstChild("RemoteEvent")
+            if remoteEvent then
+                spoofRemote(remoteEvent, function(old)
+                    local args = {old}
+                    if args[1] == "Clicked" then
+                        if enabled then
+                            return unpack({"Clicked", player.Character.Head.Position, player.Character.Head.Position + (udirection * 10000), (game.PlaceId == 8206123457 and upower) or 60, (game.PlaceId ~= 8206123457 and upower) or nil})
+                        else
+                            local direction = (player:GetMouse().Hit.Position - camera.CFrame.Position).Unit
+                            return unpack({"Clicked", player.Character.Head.Position, player.Character.Head.Position + (direction * 10000), (game.PlaceId == 8206123457 and realpower) or 60, realpower})
+                        end
+                    else
+                        return old
+                    end
+                end)
+                fb:WaitForChild("Handle"):WaitForChild("LocalScript").Enabled = true
+            end
+            ls.Enabled = true
+        end
+    end
+
+    player.Character.ChildAdded:Connect(function(fb)
+        if fb:IsA("Tool") then
+            fb:WaitForChild("Handle")
+            hookFootball(fb)
+        end
+    end)
+
+    userInputService.InputBegan:Connect(function(input, gp)
+        if not gp then
+            if input.KeyCode == Enum.KeyCode.R then
+                while userInputService:IsKeyDown(Enum.KeyCode.R) do
+                    angle += 5
+                    angle = math.clamp(angle, 5, 90)
+                    task.wait(1 / 6)
+                end
+            elseif input.KeyCode == Enum.KeyCode.F then
+                while userInputService:IsKeyDown(Enum.KeyCode.F) do
+                    angle -= 5
+                    angle = math.clamp(angle, 5, 90)
+                    task.wait(1 / 6)
+                end
+            elseif input.KeyCode == Enum.KeyCode.Q then
+                locked = not locked
+            end
+        end
+    end)
+
+    local function calculateLanding(power, direction)
+        local vel = power * direction
+        local origin = player.Character.Head.Position + direction * 5
+        local peakTime = vel.Y / 28
+        return origin + Vector3.new(vel.X * peakTime * 2, 0, vel.Z * peakTime * 2)	
+    end
+
+    local line = Drawing.new("Line")
+    line.Visible = false
+    line.Color = Color3.fromRGB(66, 135, 245)
+    line.Thickness = 1
+
+    sphere.Size = Vector3.new(3, 3, 3)
+    sphere.Shape = Enum.PartType.Ball
+    sphere.Material = Enum.Material.Neon
+    sphere.Anchored = true
+    sphere.CanCollide = false
+    sphere.Color = Color3.fromRGB(66, 135, 245)
+    sphere.Parent = workspace
+    highlight.FillColor = Color3.fromRGB(66, 135, 245)
+
+    player.PlayerGui.ChildAdded:Connect(function(child)
+        if child.Name == "BallGui" then
+            local disp = child:WaitForChild("Frame"):WaitForChild("Disp")
+            disp.Changed:Connect(function()
+                realpower = tonumber(disp.Text)
+            end)
+        end
+    end)
+
+    while true do
+        runService.RenderStepped:Wait()
+        pcall(function()
+            if not locked then
+                target = findtarget()
+            end
+            gui.Enabled = player.PlayerGui:FindFirstChild("BallGui") and enabled
+            if target and enabled and player.PlayerGui:FindFirstChild("BallGui") then
+                local position, onScreen = workspace.CurrentCamera:WorldToViewportPoint(target.HumanoidRootPart.Position)
+                local power = findPower(target.Head.Position)
+                local moveDirection = getMoveDirection(target)
+                local assumedDirection = (target.Head.Position - player.Character.Head.Position).Unit
+                local speed = (assumedDirection * power).Magnitude
+                local t = ((target.Head.Position - player.Character.Head.Position).Magnitude / speed) * (angle / 22)
+                local velocity, dir, pwr = calculateVelocity(player.Character.Head.Position + assumedDirection * 5, target.Head.Position + (moveDirection * 20 * t) + moveDirection * leadDistance, t)
+                highlight.Parent = target
+                upower = math.clamp(pwr, 0, 95)
+                udirection = dir
+                sphere.Transparency = 0
+                gui.AngleCard.AngleNumber.Text = angle
+                sphere.Position = calculateLanding(upower, udirection)
+                if onScreen then
+                    line.Visible = true
+                    line.From = workspace.CurrentCamera:WorldToViewportPoint(player.Character.Football.Handle.Position)
+                    line.To = Vector2.new(position.X, position.Y)
+                else
+                    line.Visible = false
+                end
+            else
+                line.Visible = false
+                highlight.Parent = nil
+                sphere.Transparency = 1
+            end
+        end)
+    end
+end)
+
+
+ tab:Toggle("QB Aimbot", false, function(v)
+ enabled = v
+ end)
+
+ tab:Slider("Lead Distance", .1, 40, 0, function(v)
+ leadDistance = v
+ end)
+
 local tab = win:Tab("Defense")
 
 local swatreachmain = false
@@ -329,7 +739,7 @@ tab:Slider("Auto Swat Range", 1, 45, 0, function(v)
 end)
 
 
-local tab = win:Tab("Physics")
+
 
 
 local tab = win:Tab("Teleport")
