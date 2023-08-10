@@ -156,38 +156,7 @@ tab:Slider("Pull Vector Distance", 16, 30, 1, function(Value)
     pullVectorMagnitude = Value  
 end)
 
-local Playeer = game.Players.LocalPlayer
-_G.CheckingTool = false
 
-tab:Toggle("Long Arms", {Toggled=false , Description = false}, function(bool)
-   _G.CheckingTool = bool
-Highlight = Instance.new("Highlight", Playeer.Character['Left Arm'])
-Highlight.Enabled = bool
-Highlight = Instance.new("Highlight", Playeer.Character['Right Arm'])
-Highlight.Enabled = bool
-getgenv().jjj = bool
-if getgenv().jjj == true then
-Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
-Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
-Playeer.Character['Left Arm'].Transparency = .999
-Playeer.Character['Right Arm'].Transparency = .999
-elseif getgenv().jjj == false then
-Playeer.Character['Left Arm'].Size = Vector3.new(1, 2, 1)
-Playeer.Character['Right Arm'].Size = Vector3.new(1, 2, 1)
-Playeer.Character['Left Arm'].Transparency = 0
-Playeer.Character['Right Arm'].Transparency = 0
-end
-end)
-
-tab:Slider("Long Arms Strength", 1, 40, 20, function(g)
-   _G.Arms = g
-if _G.CheckingTool == true then
-Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
-Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
-elseif _G.CheckingTool == false then
-
-end
-end)
 
 
 local tab = win:Tab("QB")
@@ -936,8 +905,68 @@ tab:Button("Auto Captain", function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Models.LockerRoomA.FinishLine.CFrame + Vector3.new(0, 2, 0)
         end)
 
+local tab = win:Tab("Player")
+
+local Playeer = game.Players.LocalPlayer
+_G.CheckingTool = false
+
+tab:Toggle("Long Arms", {Toggled=false , Description = false}, function(bool)
+   _G.CheckingTool = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Left Arm'])
+Highlight.Enabled = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Right Arm'])
+Highlight.Enabled = bool
+getgenv().jjj = bool
+if getgenv().jjj == true then
+Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
+Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
+Playeer.Character['Left Arm'].Transparency = .999
+Playeer.Character['Right Arm'].Transparency = .999
+elseif getgenv().jjj == false then
+Playeer.Character['Left Arm'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Right Arm'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Left Arm'].Transparency = 0
+Playeer.Character['Right Arm'].Transparency = 0
+end
+end)
+
+tab:Slider("Long Arms Strength", 1, 40, 20, function(g)
+   _G.Arms = g
+if _G.CheckingTool == true then
+Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
+Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
+elseif _G.CheckingTool == false then
+
+end
+end)
 
 
+tab:Toggle("Infinite Jump", false, function(Value)
+--Toggles the infinite jump between on or off on every script run
+_G.infinjump = not _G.infinjump
+
+if _G.infinJumpStarted == nil then
+    --Ensures this only runs once to save resources
+    _G.infinJumpStarted = true
+    
+    --Notifies readiness
+    game.StarterGui:SetCore("SendNotification", {Title="Lucid Premium"; Text="Infinite Jump Activated!"; Duration=5;})
+
+    --The actual infinite jump
+    local plr = game:GetService('Players').LocalPlayer
+    local m = plr:GetMouse()
+    m.KeyDown:connect(function(k)
+        if _G.infinjump then
+            if k:byte() == 32  then
+            humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+            humanoid:ChangeState('Jumping')
+            wait()
+            humanoid:ChangeState('Seated')
+            end
+        end
+    end)
+end
+   end)
 local tab = win:Tab("Visuals")
 
 tab:Button("Chat Spy", function()
