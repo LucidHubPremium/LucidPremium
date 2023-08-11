@@ -1,3 +1,166 @@
+
+local CoreGui = Instance.new("ScreenGui")
+local Coreloader = Instance.new("Frame")
+local Loader = Instance.new("Frame")
+local Thing = Instance.new("Frame")
+local TextLabel2 = Instance.new("TextLabel")
+local TextLabel = Instance.new("TextLabel")
+local TextButton = Instance.new("TextButton")
+ 
+CoreGui.Name = "CoreGui"
+CoreGui.Parent = game.CoreGui
+CoreGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Coreloader.Name = "Coreloader"
+Coreloader.Parent = CoreGui
+Coreloader.BackgroundColor3 = Color3.new(0.211765, 0.211765, 0.211765)
+Coreloader.BorderColor3 = Color3.new(0, 0, 0)
+Coreloader.BorderSizePixel = 0
+Coreloader.Position = UDim2.new(0.35, 0, 0.36807102, 0)
+Coreloader.Size = UDim2.new(0, 568, 0, 239)
+
+Loader.Name = "Loader"
+Loader.Parent = Coreloader
+Loader.BackgroundColor3 = Color3.new(0.372549, 0.117647, 0.458824)
+Loader.BorderColor3 = Color3.new(0, 0, 0)
+Loader.BorderSizePixel = 0
+Loader.Position = UDim2.new(0.0528169014, 0, 0.815899551, 0)
+Loader.Size = UDim2.new(0, 507, 0, 8)
+
+Thing.Name = "Thing"
+Thing.Parent = Loader
+Thing.BackgroundColor3 = Color3.new(1, 0.172549, 1)
+Thing.BorderColor3 = Color3.new(0, 0, 0)
+Thing.BorderSizePixel = 0
+Thing.Size = UDim2.new(0, 0, 0, 8)
+
+TextLabel2.Name = "TextLabel2"
+TextLabel2.Parent = Coreloader
+TextLabel2.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel2.BackgroundTransparency = 1
+TextLabel2.BorderColor3 = Color3.new(0, 0, 0)
+TextLabel2.BorderSizePixel = 0
+TextLabel2.Position = UDim2.new(0.0827464759, 0, 0.125523016, 0)
+TextLabel2.Size = UDim2.new(0, 473, 0, 50)
+TextLabel2.Font = Enum.Font.Gotham
+TextLabel2.Text = "Corehub Loading..."
+TextLabel2.TextColor3 = Color3.new(1, 1, 1)
+TextLabel2.TextSize = 28
+
+TextLabel.Parent = Coreloader
+TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BorderColor3 = Color3.new(0, 0, 0)
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.107394367, 0, 0.882845163, 0)
+TextLabel.Size = UDim2.new(0, 441, 0, 19)
+TextLabel.Font = Enum.Font.Gotham
+TextLabel.Text = "Please wait loading wont take long..."
+TextLabel.TextColor3 = Color3.new(1, 1, 1)
+TextLabel.TextSize = 14
+
+TextButton.Parent = Coreloader
+TextButton.BackgroundColor3 = Color3.new(0.176471, 0.176471, 0.176471)
+TextButton.BorderColor3 = Color3.new(0, 0, 0)
+TextButton.BorderSizePixel = 0
+TextButton.Position = UDim2.new(0.383802831, 0, 0.430962354, 0)
+TextButton.Size = UDim2.new(0, 130, 0, 50)
+TextButton.Font = Enum.Font.Gotham
+TextButton.Text = "Copy Discord Link"
+TextButton.TextColor3 = Color3.new(1, 1, 1)
+TextButton.TextSize = 14
+
+
+
+local frame = game:GetService("CoreGui").CoreGui.Coreloader.Loader.Thing
+local guisize = UDim2.new(0, 509,0, 8)
+local tween_time = math.random(4,5)
+local tween_time2 = 2
+local frame2 = game:GetService("CoreGui").CoreGui.Coreloader
+local guipos = UDim2.new(0.35, 0,-0.500, 0)
+local button = game:GetService("CoreGui").CoreGui.Coreloader.TextButton
+
+button.MouseButton1Click:Connect(function()
+setclipboard("https://discord.gg/hwmCFgppQH")
+end)
+
+wait(0.1)	
+
+function namechange1()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Loading Scripts..."
+end
+
+function namechange2()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Loading Gui..."
+end
+
+function namechange3()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Almost There..."
+end
+
+function starttween()
+	local tweenInfo = TweenInfo.new(tween_time, Enum.EasingStyle.Linear)
+	local tween = game:GetService("TweenService"):Create(frame, tweenInfo, {Size = guisize})
+	tween:Play()
+end	
+wait(0.5)
+starttween()
+wait(1)
+namechange1()
+wait(1.2)
+namechange2()
+wait(1.4)
+namechange3()
+wait(2.4)
+
+function endtween2()
+	local tweenInfo2 = TweenInfo.new(tween_time2, Enum.EasingStyle.Quad)
+	local tween2 = game:GetService("TweenService"):Create(frame2, tweenInfo2, {Position = guipos})
+	tween2:Play()
+end
+endtween2()
+
+wait(3)
+
+	game:GetService("CoreGui").CoreGui:Destroy()
+
+    do --//
+        local coreGui = game:GetService("CoreGui")
+        local contentProvider = game:GetService('ContentProvider')
+        local tbl = {}
+        
+        for index, descendant in pairs(coreGui:GetDescendants()) do
+            if descendant:IsA("ImageLabel") and string.find(descendant.Image, "rbxasset://") then
+                table.insert(tbl, descendant.Image)
+            end
+        end
+        
+        local preloadAsync; preloadAsync = hookfunction(contentProvider.PreloadAsync, function(self, ...)
+            local args = {...}
+            if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) then
+                args[1] = tbl
+                return preloadAsync(self, unpack(args))
+            end
+            return preloadAsync(self, ...)
+        end)
+        
+        local function compareMethod(m1, m2)
+            return string.lower(m1) == string.lower(m2)
+        end
+        
+        local __namecall; __namecall = hookmetamethod(game, "__namecall", function(self, ...)
+            local args = {...}
+            local method = getnamecallmethod()
+            if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) and self == contentProvider and compareMethod("PreloadAsync", method) then
+                args[1] = tbl
+                return __namecall(self, unpack(args))
+            end
+            return __namecall(self, ...)
+        end)
+    end
+    
+
+
 do --//
     local coreGui = game:GetService("CoreGui")
     local contentProvider = game:GetService('ContentProvider')
@@ -57,70 +220,66 @@ local wiihub = {
 
 
 ----- actual stuff
-
-local Players = game:GetService("Players")
-local Mouse = Players.LocalPlayer:GetMouse()
-local numTeleports = 30 -- Define the number of teleports
-local tooggleEnabled = false -- Variable to track the toggle state
-
-
-
-
-local Players = game:GetService("Players")
-local Mouse = Players.LocalPlayer:GetMouse()
-local numTeleports = 30 -- Define the number of teleports
-local tooggleEnabled = false -- Variable to track the toggle state
-
-local function universalcatch()
-    if tooggleEnabled then
-    local catchRight = Players.LocalPlayer.Character:FindFirstChild("CatchRight")
-
-    if not catchRight then
-        return
-    end
-
-    local closestFootball = nil
-    local closestDistance = math.huge
-
-    for i, v in pairs(game.Workspace:GetDescendants()) do
-        if v.Name == "Football" and v:IsA("BasePart") then
-            local distance = (v.Position - catchRight.Position).Magnitude
-            if distance < closestDistance and distance <= universal then
-                v.CanCollide = false
-                closestDistance = distance
-                closestFootball = v
-            end
-        end
-    end
-    
-    if closestFootball then
-        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
-        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
-        task.wait()
-        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
-        firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
-            wait()
-            end
-        end
-    end
-
-----
-
-
 local tab = win:Tab("Catching")
 
+local player = game.Players.LocalPlayer
+local rs = game:GetService("RunService")
 
-tab:Toggle("Adjustable Mags", false, function(v)
-                                        tooggleEnabled = v
-                                        while tooggleEnabled == true do
-                                            task.wait()
-                                            universalcatch()
-                                        end
-                                    end)
+function moveBall(ball)
+    if ball and player.Character then
+        local leftArm = player.Character:FindFirstChild("Left Arm")
+        if leftArm then
+            ball.CanCollide = false
+            local startPosition = ball.Position
+            local endPosition = leftArm.Position
+            local direction = (endPosition - startPosition).Unit
+            local distance = (endPosition - startPosition).Magnitude
+            local speed = distance / 2000
+            local startTime = tick()
 
-tab:Slider("Mag Distance", .1, 30, 0, function(v)
-                                        universal = v
-                                    end)
+            rs:BindToRenderStep("MoveBall", Enum.RenderPriority.Camera.Value + 1, function()
+                local elapsedTime = tick() - startTime
+                local t = math.min(elapsedTime / speed, 1)
+                local newPosition = startPosition + direction * distance * t
+                ball.CFrame = CFrame.new(newPosition)
+                if t >= 1 then
+                    rs:UnbindFromRenderStep("MoveBall")
+                    ball.CanCollide = true
+                end
+            end)
+        end
+    end
+end
+
+rs.Stepped:Connect(function()
+    local closestBall = nil
+    local closestDist = math.huge
+
+    for _, v in ipairs(workspace:GetChildren()) do
+        if v.Name == "Football" and v:IsA("BasePart") then
+            local mag = (player.Character.Torso.Position - v.Position).Magnitude
+            if mag <= 15 and mag < closestDist then
+                closestBall = v
+                closestDist = mag
+            end
+        end
+    end
+
+    if closestBall then
+        moveBall(closestBall)
+    end
+end)
+
+tab:Toggle("Regular Magnets", false, function(value)
+    toggleValue = value
+    print("Toggle state:", toggleValue)
+end)
+
+
+tab:Slider("Regular Distance", 5, 30, 15, function(value)
+    magnetDistance = value
+end)
+
 
 
 
@@ -800,5 +959,3 @@ tab:Button("Rejoin Server", function ()
         local uis = game:GetService("UserInputService")
                   
  end)
-
-
