@@ -62,7 +62,7 @@ local wiihub = {
 ----- actual stuff
 
 
-
+local tab = win:Tab("Catching")
 
 local player = game.Players.LocalPlayer
 local runService = game:GetService("RunService")
