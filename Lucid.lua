@@ -1,40 +1,170 @@
 
+local CoreGui = Instance.new("ScreenGui")
+local Coreloader = Instance.new("Frame")
+local Loader = Instance.new("Frame")
+local Thing = Instance.new("Frame")
+local TextLabel2 = Instance.new("TextLabel")
+local TextLabel = Instance.new("TextLabel")
+local TextButton = Instance.new("TextButton")
+ 
+CoreGui.Name = "CoreGui"
+CoreGui.Parent = game.CoreGui
+CoreGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Coreloader.Name = "Coreloader"
+Coreloader.Parent = CoreGui
+Coreloader.BackgroundColor3 = Color3.new(0.211765, 0.211765, 0.211765)
+Coreloader.BorderColor3 = Color3.new(0, 0, 0)
+Coreloader.BorderSizePixel = 0
+Coreloader.Position = UDim2.new(0.35, 0, 0.36807102, 0)
+Coreloader.Size = UDim2.new(0, 568, 0, 239)
+
+Loader.Name = "Loader"
+Loader.Parent = Coreloader
+Loader.BackgroundColor3 = Color3.new(0.372549, 0.117647, 0.458824)
+Loader.BorderColor3 = Color3.new(0, 0, 0)
+Loader.BorderSizePixel = 0
+Loader.Position = UDim2.new(0.0528169014, 0, 0.815899551, 0)
+Loader.Size = UDim2.new(0, 507, 0, 8)
+
+Thing.Name = "Thing"
+Thing.Parent = Loader
+Thing.BackgroundColor3 = Color3.new(1, 0.172549, 1)
+Thing.BorderColor3 = Color3.new(0, 0, 0)
+Thing.BorderSizePixel = 0
+Thing.Size = UDim2.new(0, 0, 0, 8)
+
+TextLabel2.Name = "TextLabel2"
+TextLabel2.Parent = Coreloader
+TextLabel2.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel2.BackgroundTransparency = 1
+TextLabel2.BorderColor3 = Color3.new(0, 0, 0)
+TextLabel2.BorderSizePixel = 0
+TextLabel2.Position = UDim2.new(0.0827464759, 0, 0.125523016, 0)
+TextLabel2.Size = UDim2.new(0, 473, 0, 50)
+TextLabel2.Font = Enum.Font.Gotham
+TextLabel2.Text = "Lucid"
+TextLabel2.TextColor3 = Color3.new(1, 1, 1)
+TextLabel2.TextSize = 28
+
+TextLabel.Parent = Coreloader
+TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BorderColor3 = Color3.new(0, 0, 0)
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.107394367, 0, 0.882845163, 0)
+TextLabel.Size = UDim2.new(0, 441, 0, 19)
+TextLabel.Font = Enum.Font.Gotham
+TextLabel.Text = "Please wait loading wont take long..."
+TextLabel.TextColor3 = Color3.new(1, 1, 1)
+TextLabel.TextSize = 14
+
+TextButton.Parent = Coreloader
+TextButton.BackgroundColor3 = Color3.new(0.176471, 0.176471, 0.176471)
+TextButton.BorderColor3 = Color3.new(0, 0, 0)
+TextButton.BorderSizePixel = 0
+TextButton.Position = UDim2.new(0.383802831, 0, 0.430962354, 0)
+TextButton.Size = UDim2.new(0, 130, 0, 50)
+TextButton.Font = Enum.Font.Gotham
+TextButton.Text = "Copy Discord Link"
+TextButton.TextColor3 = Color3.new(1, 1, 1)
+TextButton.TextSize = 14
+
+
+
+local frame = game:GetService("CoreGui").CoreGui.Coreloader.Loader.Thing
+local guisize = UDim2.new(0, 509,0, 8)
+local tween_time = math.random(4,5)
+local tween_time2 = 2
+local frame2 = game:GetService("CoreGui").CoreGui.Coreloader
+local guipos = UDim2.new(0.35, 0,-0.500, 0)
+local button = game:GetService("CoreGui").CoreGui.Coreloader.TextButton
+
+button.MouseButton1Click:Connect(function()
+setclipboard("https://discord.gg/hwmCFgppQH")
+end)
+
+wait(0.1)	
+
+function namechange1()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Checking Whitelist..."
+end
+
+function namechange2()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Authenticating..."
+end
+
+function namechange3()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Almost There..."
+end
+
+function starttween()
+	local tweenInfo = TweenInfo.new(tween_time, Enum.EasingStyle.Linear)
+	local tween = game:GetService("TweenService"):Create(frame, tweenInfo, {Size = guisize})
+	tween:Play()
+end	
+wait(0.5)
+starttween()
+wait(1)
+namechange1()
+wait(1.2)
+namechange2()
+wait(1.4)
+namechange3()
+wait(2.4)
+
+function endtween2()
+	local tweenInfo2 = TweenInfo.new(tween_time2, Enum.EasingStyle.Quad)
+	local tween2 = game:GetService("TweenService"):Create(frame2, tweenInfo2, {Position = guipos})
+	tween2:Play()
+end
+endtween2()
+
+wait(3)
+
+	game:GetService("CoreGui").CoreGui:Destroy()
+
+
+
+
+
+
 
 
 do --//
-    local coreGui = game:GetService("CoreGui")
-    local contentProvider = game:GetService('ContentProvider')
-    local tbl = {}
-    
-    for index, descendant in pairs(coreGui:GetDescendants()) do
-        if descendant:IsA("ImageLabel") and string.find(descendant.Image, "rbxasset://") then
-            table.insert(tbl, descendant.Image)
+        local coreGui = game:GetService("CoreGui")
+        local contentProvider = game:GetService('ContentProvider')
+        local tbl = {}
+        
+        for index, descendant in pairs(coreGui:GetDescendants()) do
+            if descendant:IsA("ImageLabel") and string.find(descendant.Image, "rbxasset://") then
+                table.insert(tbl, descendant.Image)
+            end
         end
+        
+        local preloadAsync; preloadAsync = hookfunction(contentProvider.PreloadAsync, function(self, ...)
+            local args = {...}
+            if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) then
+                args[1] = tbl
+                return preloadAsync(self, unpack(args))
+            end
+            return preloadAsync(self, ...)
+        end)
+        
+        local function compareMethod(m1, m2)
+            return string.lower(m1) == string.lower(m2)
+        end
+        
+        local __namecall; __namecall = hookmetamethod(game, "__namecall", function(self, ...)
+            local args = {...}
+            local method = getnamecallmethod()
+            if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) and self == contentProvider and compareMethod("PreloadAsync", method) then
+                args[1] = tbl
+                return __namecall(self, unpack(args))
+            end
+            return __namecall(self, ...)
+        end)
     end
-    
-    local preloadAsync; preloadAsync = hookfunction(contentProvider.PreloadAsync, function(self, ...)
-        local args = {...}
-        if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) then
-            args[1] = tbl
-            return preloadAsync(self, unpack(args))
-        end
-        return preloadAsync(self, ...)
-    end)
-    
-    local function compareMethod(m1, m2)
-        return string.lower(m1) == string.lower(m2)
-    end
-    
-    local __namecall; __namecall = hookmetamethod(game, "__namecall", function(self, ...)
-        local args = {...}
-        local method = getnamecallmethod()
-        if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) and self == contentProvider and compareMethod("PreloadAsync", method) then
-            args[1] = tbl
-            return __namecall(self, unpack(args))
-        end
-        return __namecall(self, ...)
-    end)
-end
 
 
 
@@ -100,145 +230,6 @@ end)
 
 
 
-
-local tab = win:Tab("Defense")
-
-local swatreachmain = false
-local player = game.Players.LocalPlayer
-local swatDistance = math.huge
-local swatted = false
-local userInputService = game:GetService("UserInputService")
-
-local function isFootball(fb)
-    return fb and fb:FindFirstChildWhichIsA("RemoteEvent")
-end
-
-local function getNearestBall(checkFunc)
-    local lowestDistance = math.huge
-    local lowestFB = nil
-    for index, part in pairs(workspace:GetChildren()) do
-        if isFootball(part) and not part.Anchored then
-            if checkFunc then
-                if not checkFunc(part) then
-                    continue
-                end
-            end
-            local distance = (player.Character.HumanoidRootPart.Position - part.Position).Magnitude
-            if distance < lowestDistance then
-                lowestFB = part
-                lowestDistance = distance
-            end
-        end
-    end
-    return lowestFB, lowestDistance
-end
-
-local function getNearestPartToPartFromParts(parts, part)
-    local lowestMagnitude = math.huge
-    local lowestPart = nil
-    for index, p in pairs(parts) do
-        local dis = (part.Position - p.Position).Magnitude
-        if dis < lowestMagnitude then
-            lowestMagnitude = dis
-            lowestPart = p
-        end
-    end
-    return lowestPart
-end
-
-local function initCharacter(char)
-    while swatreachmain do
-        task.wait()
-        local ball = getNearestBall()
-        if ball and swatted then
-            local distance = (player.Character.HumanoidRootPart.Position - ball.Position).Magnitude
-            if distance < swatDistance then
-                local catch = getNearestPartToPartFromParts({player.Character["CatchLeft"], player.Character["CatchRight"]}, ball)
-                firetouchinterest(ball, catch, 0)
-                firetouchinterest(ball, catch, 1)
-            end
-        end
-    end
-end
-
-userInputService.InputBegan:Connect(function(input, gp)
-    if not gp then
-        if input.KeyCode == Enum.KeyCode.R and not swatted then
-            swatted = true
-            task.wait(1.5)
-            swatted = false
-        end
-    end
-end)
-
-local function updateCharacter(character)
-    if swatreachmain then
-        initCharacter(character)
-    end
-end
-
-player.CharacterAdded:Connect(updateCharacter)
-
-tab:Toggle("Swat Reach", swatreachmain, function(value)
-    swatreachmain = value
-    if value then
-        updateCharacter(player.Character) 
-    end
-end)
-
-if swatreachmain then
-    initCharacter(player.Character)
-end
-
-
-
-
-
--- Auto Swat
-
-local autoswatv = 0
-
- local enabledd = false
-
- local function autoswatfunction()
-    if enabledd then
-        local player = game.Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-        local RunService = game:GetService("RunService")
-
-        local function checkDistance(part)
-            local distance = (part.Position - humanoidRootPart.Position).Magnitude
-            if distance <= autoswatv then
-                keypress(0x52)
-                keyrelease(0x52)
-                task.wait()
-            end
-        end
-        local function updateDistances()
-            for _, v in pairs(game.Workspace:GetDescendants()) do
-                if v.Name == "Football" and v:IsA("BasePart") then
-                    checkDistance(v)
-                end
-            end
-        end
-        connection = RunService.Heartbeat:Connect(updateDistances)
-    else
-        if connection then
-            connection:Disconnect()
-            connection = nil
-        end
-    end
-end
-
-tab:Toggle("Auto Swat", false, function(v)
-    enabledd = v
-    autoswatfunction()
-end)
-
-tab:Slider("Auto Swat Range", 1, 45, 0, function(v)
-    autoswatv = v
-end)
 
 
 
@@ -443,7 +434,41 @@ local tab = win:Tab("Player")
 local Playeer = game.Players.LocalPlayer
 _G.CheckingTool = false
 
-tab:Toggle("Long Arms", {Toggled=false , Description = false}, function(bool)
+tab:Toggle("Long Legs", false, function(bool)
+   _G.CheckingTool = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Left Leg'])
+Highlight.Enabled = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Right Leg'])
+Highlight.Enabled = bool
+getgenv().jjj = bool
+if getgenv().jjj == true then
+Playeer.Character['Left Leg'].Size = Vector3.new(1, _G.Legs, 1)
+Playeer.Character['Right Leg'].Size = Vector3.new(1, _G.Legs, 1)
+Playeer.Character['Left Leg'].Transparency = .999
+Playeer.Character['Right Leg'].Transparency = .999
+elseif getgenv().jjj == false then
+Playeer.Character['Left Leg'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Right Leg'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Left Leg'].Transparency = 0
+Playeer.Character['Right Leg'].Transparency = 0
+end
+end)
+
+tab:Slider("Long Legs Height", 1, 40, 20, function(g)
+   _G.Legs = g
+if _G.CheckingTool == true then
+Playeer.Character['Left Leg'].Size = Vector3.new(1, _G.Legs, 1)
+Playeer.Character['Right Leg'].Size = Vector3.new(1, _G.Legs, 1)
+elseif _G.CheckingTool == false then
+
+end
+end)
+
+
+
+
+
+tab:Toggle("Long Arms", false, function(bool)
    _G.CheckingTool = bool
 Highlight = Instance.new("Highlight", Playeer.Character['Left Arm'])
 Highlight.Enabled = bool
@@ -463,16 +488,14 @@ Playeer.Character['Right Arm'].Transparency = 0
 end
 end)
 
-tab:Slider("Long Arms Strength", 1, 40, 20, function(g)
+tab:Slider("Long Arms Reach", 1, 40, 20, function(g)
    _G.Arms = g
 if _G.CheckingTool == true then
 Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
 Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
 elseif _G.CheckingTool == false then
-
-end
+		end
 end)
-
 
 tab:Toggle("Infinite Jump", false, function(Value)
 --Toggles the infinite jump between on or off on every script run
@@ -500,6 +523,7 @@ if _G.infinJumpStarted == nil then
     end)
 end
    end)
+
 local tab = win:Tab("Visuals")
 
 tab:Button("Chat Spy", function()
@@ -728,7 +752,7 @@ local PlaceID = game.PlaceId
 
 
 
-tab:Button("Rejoin Server", function ()
+tab:Button("Rejoin Server", function()
     repeat
         wait()  
         until game:IsLoaded() 
@@ -740,3 +764,4 @@ tab:Button("Rejoin Server", function ()
         local uis = game:GetService("UserInputService")
                   
  end)
+	
