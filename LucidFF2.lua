@@ -332,14 +332,352 @@ if _G.infinJumpStarted == nil then
 end
    end,
 })
-	
-    local Tab = Window:CreateTab("Automatics") -- Title, Image
 
-     local Section = Tab:CreateSection("Captain")
+local Tab = Window:CreateTab("Teleport") -- Title, Image
 
-     local Button = Tab:CreateButton({
-        Name = "Finish Captain Race",
+     local Section = Tab:CreateSection("Areas")
+
+local Button = Tab:CreateButton({
+        Name = "TP to Home Endzone",
         Callback = function()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Models.LockerRoomA.FinishLine.CFrame + Vector3.new(0, 2, 0)
+local Teleport1 = function(XP, YP, ZP)
+		local XTpEvery = 8
+		local YTpEvery = 1
+		local ZTpEvery = 8
+		local Timer = 0.2
+		local pos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
+		if pos.Position.X < XP then
+			for x = pos.Position.X, XP, XTpEvery do
+				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
+				local part = Instance.new("Part", workspace)
+				part.Anchored = true
+				part.Size = Vector3.new(10, 0.1, 10)
+				part.Material = "Glass"
+				part.BrickColor = BrickColor.Random()
+				part.Transparency = 1
+				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+				wait(Timer)
+				part:Destroy()
+			end
+		else
+			for x = pos.Position.X, XP, -XTpEvery do
+				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
+				local part = Instance.new("Part", workspace)
+				part.Anchored = true
+				part.Size = Vector3.new(10, 0.1, 10)
+				part.Material = "Glass"
+				part.BrickColor = BrickColor.Random()
+				part.Transparency = 1
+				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+				wait(Timer)
+				part:Destroy()
+			end
+		end
+		if pos.Position.Z < ZP then
+			for z = pos.Position.Z, ZP, ZTpEvery do
+				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
+				local part = Instance.new("Part", workspace)
+				part.Anchored = true
+				part.Size = Vector3.new(10, 0.1, 10)
+				part.Material = "Glass"
+				part.BrickColor = BrickColor.Random()
+				part.Transparency = 1
+				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+				wait(Timer)
+				part:Destroy()
+			end
+		else
+			for z = pos.Position.Z, ZP, -ZTpEvery do
+				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
+				local part = Instance.new("Part", workspace)
+				part.Anchored = true
+				part.Size = Vector3.new(10, 0.1, 10)
+				part.Material = "Glass"
+				part.BrickColor = BrickColor.Random()
+				part.Transparency = 1
+				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+				wait(Timer)
+				part:Destroy()
+			end
+		end
+		if pos.Position.Y < YP then
+			for High = pos.Position.Y, YP, YTpEvery do
+				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
+				local part = Instance.new("Part", workspace)
+				part.Anchored = true
+				part.Size = Vector3.new(10, 0.1, 10)
+				part.Material = "Glass"
+				part.BrickColor = BrickColor.Random()
+				part.Transparency = 1
+				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+				wait(Timer)
+				part:Destroy()
+			end
+		else
+			for High = pos.Position.Y, YP, -YTpEvery do
+				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
+				local part = Instance.new("Part", workspace)
+				part.Anchored = true
+				part.Size = Vector3.new(10, 0.1, 10)
+				part.Material = "Glass"
+				part.BrickColor = BrickColor.Random()
+				part.Transparency = 1
+				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+				wait(Timer)
+				part:Destroy()
+			end
+		end
+		game.Players.LocalPlayer.Character:MoveTo(Vector3.new(XP, YP, ZP))
+	end
+Teleport1(2, 6, -169)
+ end,
+})
+
+
+local Button = Tab:CreateButton({
+        Name = "TP to Away Endzone",
+        Callback = function()
+    local Teleport1 = function(XP, YP, ZP)
+        local XTpEvery = 8
+        local YTpEvery = 1
+        local ZTpEvery = 8
+        local Timer = 0.2
+        local pos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
+        if pos.Position.X < XP then
+            for x = pos.Position.X, XP, XTpEvery do
+                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
+                local part = Instance.new("Part", workspace)
+                part.Anchored = true
+                part.Size = Vector3.new(10, 0.1, 10)
+                part.Material = "Glass"
+                part.BrickColor = BrickColor.Random()
+                part.Transparency = 1
+                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+                wait(Timer)
+                part:Destroy()
+            end
+        else
+            for x = pos.Position.X, XP, -XTpEvery do
+                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
+                local part = Instance.new("Part", workspace)
+                part.Anchored = true
+                part.Size = Vector3.new(10, 0.1, 10)
+                part.Material = "Glass"
+                part.BrickColor = BrickColor.Random()
+                part.Transparency = 1
+                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+                wait(Timer)
+                part:Destroy()
+            end
         end
-     })
+        if pos.Position.Z < ZP then
+            for z = pos.Position.Z, ZP, ZTpEvery do
+                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
+                local part = Instance.new("Part", workspace)
+                part.Anchored = true
+                part.Size = Vector3.new(10, 0.1, 10)
+                part.Material = "Glass"
+                part.BrickColor = BrickColor.Random()
+                part.Transparency = 1
+                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+                wait(Timer)
+                part:Destroy()
+            end
+        else
+            for z = pos.Position.Z, ZP, -ZTpEvery do
+                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
+                local part = Instance.new("Part", workspace)
+                part.Anchored = true
+                part.Size = Vector3.new(10, 0.1, 10)
+                part.Material = "Glass"
+                part.BrickColor = BrickColor.Random()
+                part.Transparency = 1
+                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+                wait(Timer)
+                part:Destroy()
+            end
+        end
+        if pos.Position.Y < YP then
+            for High = pos.Position.Y, YP, YTpEvery do
+                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
+                local part = Instance.new("Part", workspace)
+                part.Anchored = true
+                part.Size = Vector3.new(10, 0.1, 10)
+                part.Material = "Glass"
+                part.BrickColor = BrickColor.Random()
+                part.Transparency = 1
+                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+                wait(Timer)
+                part:Destroy()
+            end
+        else
+            for High = pos.Position.Y, YP, -YTpEvery do
+                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
+                local part = Instance.new("Part", workspace)
+                part.Anchored = true
+                part.Size = Vector3.new(10, 0.1, 10)
+                part.Material = "Glass"
+                part.BrickColor = BrickColor.Random()
+                part.Transparency = 1
+                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+                wait(Timer)
+                part:Destroy()
+            end
+        end
+        game.Players.LocalPlayer.Character:MoveTo(Vector3.new(XP, YP, ZP))
+    end
+
+    Teleport1(-0, 6, 164)
+ end,
+})
+
+local Section = Tab:CreateSection("Misc")
+
+local Button = Tab:CreateButton({
+        Name = "Server Hop",
+        Callback = function()
+local PlaceID = game.PlaceId
+    local AllIDs = {}
+    local foundAnything = ""
+    local actualHour = os.date("!*t").hour
+    local Deleted = false
+    local File = pcall(function()
+        AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+    end)
+    if not File then
+        table.insert(AllIDs, actualHour)
+        writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+    end
+    function TPReturner()
+        local Site;
+        if foundAnything == "" then
+            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+        else
+            Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+        end
+        local ID = ""
+        if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+            foundAnything = Site.nextPageCursor
+        end
+        local num = 0;
+        for i,v in pairs(Site.data) do
+            local Possible = true
+            ID = tostring(v.id)
+            if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                for _,Existing in pairs(AllIDs) do
+                    if num ~= 0 then
+                        if ID == tostring(Existing) then
+                            Possible = false
+                        end
+                    else
+                        if tonumber(actualHour) ~= tonumber(Existing) then
+                            local delFile = pcall(function()
+                                delfile("NotSameServers.json")
+                                AllIDs = {}
+                                table.insert(AllIDs, actualHour)
+                            end)
+                        end
+                    end
+                    num = num + 1
+                end
+                if Possible == true then
+                    table.insert(AllIDs, ID)
+                    wait()
+                    pcall(function()
+                        writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                        wait()
+                        game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                    end)
+                    wait(4)
+                end
+            end
+        end
+    end
+     
+    function Teleport()
+        while wait() do
+            pcall(function()
+                TPReturner()
+                if foundAnything ~= "" then
+                    TPReturner()
+                end
+            end)
+        end
+    end
+     
+    Teleport()
+ end,
+	})
+
+
+
+    local Tab = Window:CreateTab("Visuals") -- Title, Image
+
+     local Section = Tab:CreateSection("Visuals")
+
+     local Toggle = Tab:CreateToggle({
+   Name = "Ball Tracer",
+   CurrentValue = false,
+   Flag = "Toggle",
+   Callback = function(enabled)
+   tracerEnabled = enabled
+    
+        if not enabled then
+            
+            for _, tracer in ipairs(Tracers) do
+                tracer:Remove()
+            end
+    
+            for _, label in ipairs(DistanceLabels) do
+                label:Remove()
+            end
+    
+            Tracers = {}
+            DistanceLabels = {}
+        else
+    
+            for _, child in ipairs(workspace:GetChildren()) do
+                if child.Name == "Football" then
+                    AttachBall(child)
+                end
+            end
+        end
+     end,
+})
+    
+        local func = workspace.ChildAdded:Connect(function(f)
+            if f.Name == "Football" and f:IsA("BasePart") then
+                task.wait()
+                local g = Vector3.new(0, -28.1, 0)
+                local t = 8
+                local v0 = f.Velocity
+                local x0 = f.Position
+                local curve0, curve1, cf1, cf2 = beamProjectile(g, v0, x0, t)
+                   local line = Instance.new("Beam")
+                local att0 = Instance.new("Attachment")
+                local att1 = Instance.new("Attachment")
+                line.Color = ColorSequence.new(Color3.fromRGB(38, 255, 0))
+                   line.Transparency = NumberSequence.new(0, 0)
+                line.CurveSize0 = curve0
+                line.CurveSize1 = curve1
+                   line.Name = "Catch"
+                line.Parent = workspace.Terrain
+          
+                    
+                line.Segments = 10000
+                att0.Parent = workspace.Terrain
+                att1.Parent = workspace.Terrain
+                att0.CFrame = att0.Parent.CFrame:Inverse() * cf1
+                att1.CFrame = att1.Parent.CFrame:Inverse() * cf2
+                   line.Attachment0 = att0
+                line.Attachment1 = att1
+                line.Width0 = 1
+                line.Width1 = 1
+    
+               wait(7)
+                    att0:Destroy()
+                    att1:Destroy()
+                    line:Destroy()
+                end
+        end)
+        
