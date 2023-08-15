@@ -294,7 +294,7 @@ end,
 local MainSection = MainTab:CreateSection("Other")
 
 local Toggle = MainTab:CreateToggle({
-   Name = "Fake JP (Jump twice)",
+   Name = "Infinite Jump",
    CurrentValue = false,
    Flag = "Toggle",
    Callback = function(Value)
@@ -317,8 +317,7 @@ if _G.infinJumpStarted == nil then
             if k:byte() == 32  then
             humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
             humanoid:ChangeState('Jumping')
-            wait()
-            humanoid:ChangeState('Seated')
+            
             end
         end
     end)
