@@ -62,91 +62,6 @@ local wiihub = {
 ----- actual stuff
 local tab = win:Tab("Catching")
 
-local player = game.Players.LocalPlayer
-local rs = game:GetService("RunService")
-
-function moveBall(ball)
-    if ball and player.Character then
-        local leftArm = player.Character:FindFirstChild("Left Arm")
-        if leftArm then
-            ball.CanCollide = false
-            local startPosition = ball.Position
-            local endPosition = leftArm.Position
-            local direction = (endPosition - startPosition).Unit
-            local distance = (endPosition - startPosition).Magnitude
-            local speed = distance / 2000
-            local startTime = tick()
-
-            rs:BindToRenderStep("MoveBall", Enum.RenderPriority.Camera.Value + 1, function()
-                local elapsedTime = tick() - startTime
-                local t = math.min(elapsedTime / speed, 1)
-                local newPosition = startPosition + direction * distance * t
-                ball.CFrame = CFrame.new(newPosition)
-                if t >= 1 then
-                    rs:UnbindFromRenderStep("MoveBall")
-                    ball.CanCollide = true
-                end
-            end)
-        end
-    end
-end
-
-rs.Stepped:Connect(function()
-    local closestBall = nil
-    local closestDist = math.huge
-
-    for _, v in ipairs(workspace:GetChildren()) do
-        if v.Name == "Football" and v:IsA("BasePart") then
-            local mag = (player.Character.Torso.Position - v.Position).Magnitude
-            if mag <= 15 and mag < closestDist then
-                closestBall = v
-                closestDist = mag
-            end
-        end
-    end
-
-    if closestBall then
-        moveBall(closestBall)
-    end
-end)
-
-tab:Toggle("Regular Magnets", false, function(value)
-    toggleValue = value
-    print("Toggle state:", toggleValue)
-end)
-
-
-tab:Slider("Regular Distance", 5, 30, 15, function(value)
-    magnetDistance = value
-end)
-
-
-
-
-local player = game.Players.LocalPlayer
-local runService = game:GetService("RunService")
-local pullVectorEnabled = false  
-local pullVectorMagnitude = 10 
-
-function magBall(ball)
-    if ball and player.Character then
-        local direction = (ball.Position - player.Character.HumanoidRootPart.Position).Unit
-        player.Character.HumanoidRootPart.Velocity = direction * pullVectorMagnitude  
-    end
-end
-
-runService.Stepped:Connect(function()
-    if pullVectorEnabled then
-        for _, ball in ipairs(workspace:GetChildren()) do
-            if ball.Name == "Football" and ball:IsA("BasePart") then
-                local magnitude = (player.Character.HumanoidRootPart.Position - ball.Position).Magnitude
-                if magnitude < 10 then
-                    magBall(ball)
-                end
-            end
-        end
-    end
-end)
 tab:Toggle("Silent Pull Vector", false, function(Value)
     pullVectorEnabled = Value  
 end)
@@ -160,339 +75,10 @@ end)
 
 
 
-local tab = win:Tab("Defense")
-
-local swatreachmain = false
-local player = game.Players.LocalPlayer
-local swatDistance = math.huge
-local swatted = false
-local userInputService = game:GetService("UserInputService")
-
-local function isFootball(fb)
-    return fb and fb:FindFirstChildWhichIsA("RemoteEvent")
-end
-
-local function getNearestBall(checkFunc)
-    local lowestDistance = math.huge
-    local lowestFB = nil
-    for index, part in pairs(workspace:GetChildren()) do
-        if isFootball(part) and not part.Anchored then
-            if checkFunc then
-                if not checkFunc(part) then
-                    continue
-                end
-            end
-            local distance = (player.Character.HumanoidRootPart.Position - part.Position).Magnitude
-            if distance < lowestDistance then
-                lowestFB = part
-                lowestDistance = distance
-            end
-        end
-    end
-    return lowestFB, lowestDistance
-end
-
-local function getNearestPartToPartFromParts(parts, part)
-    local lowestMagnitude = math.huge
-    local lowestPart = nil
-    for index, p in pairs(parts) do
-        local dis = (part.Position - p.Position).Magnitude
-        if dis < lowestMagnitude then
-            lowestMagnitude = dis
-            lowestPart = p
-        end
-    end
-    return lowestPart
-end
-
-local function initCharacter(char)
-    while swatreachmain do
-        task.wait()
-        local ball = getNearestBall()
-        if ball and swatted then
-            local distance = (player.Character.HumanoidRootPart.Position - ball.Position).Magnitude
-            if distance < swatDistance then
-                local catch = getNearestPartToPartFromParts({player.Character["CatchLeft"], player.Character["CatchRight"]}, ball)
-                firetouchinterest(ball, catch, 0)
-                firetouchinterest(ball, catch, 1)
-            end
-        end
-    end
-end
-
-userInputService.InputBegan:Connect(function(input, gp)
-    if not gp then
-        if input.KeyCode == Enum.KeyCode.R and not swatted then
-            swatted = true
-            task.wait(1.5)
-            swatted = false
-        end
-    end
-end)
-
-local function updateCharacter(character)
-    if swatreachmain then
-        initCharacter(character)
-    end
-end
-
-player.CharacterAdded:Connect(updateCharacter)
-
-tab:Toggle("Swat Reach", swatreachmain, function(value)
-    swatreachmain = value
-    if value then
-        updateCharacter(player.Character) 
-    end
-end)
-
-if swatreachmain then
-    initCharacter(player.Character)
-end
-
-
-
-
-
--- Auto Swat
-
-local autoswatv = 0
-
- local enabledd = false
-
- local function autoswatfunction()
-    if enabledd then
-        local player = game.Players.LocalPlayer
-        local character = player.Character or player.CharacterAdded:Wait()
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-        local RunService = game:GetService("RunService")
-
-        local function checkDistance(part)
-            local distance = (part.Position - humanoidRootPart.Position).Magnitude
-            if distance <= autoswatv then
-                keypress(0x52)
-                keyrelease(0x52)
-                task.wait()
-            end
-        end
-        local function updateDistances()
-            for _, v in pairs(game.Workspace:GetDescendants()) do
-                if v.Name == "Football" and v:IsA("BasePart") then
-                    checkDistance(v)
-                end
-            end
-        end
-        connection = RunService.Heartbeat:Connect(updateDistances)
-    else
-        if connection then
-            connection:Disconnect()
-            connection = nil
-        end
-    end
-end
-
-tab:Toggle("Auto Swat", false, function(v)
-    enabledd = v
-    autoswatfunction()
-end)
-
-tab:Slider("Auto Swat Range", 1, 45, 0, function(v)
-    autoswatv = v
-end)
-
-
 
 
 
 local tab = win:Tab("Teleport")
-
-tab:Button("TP to Home Endzone", function()
-local Teleport1 = function(XP, YP, ZP)
-		local XTpEvery = 8
-		local YTpEvery = 1
-		local ZTpEvery = 8
-		local Timer = 0.2
-		local pos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
-		if pos.Position.X < XP then
-			for x = pos.Position.X, XP, XTpEvery do
-				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
-				local part = Instance.new("Part", workspace)
-				part.Anchored = true
-				part.Size = Vector3.new(10, 0.1, 10)
-				part.Material = "Glass"
-				part.BrickColor = BrickColor.Random()
-				part.Transparency = 1
-				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-				wait(Timer)
-				part:Destroy()
-			end
-		else
-			for x = pos.Position.X, XP, -XTpEvery do
-				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
-				local part = Instance.new("Part", workspace)
-				part.Anchored = true
-				part.Size = Vector3.new(10, 0.1, 10)
-				part.Material = "Glass"
-				part.BrickColor = BrickColor.Random()
-				part.Transparency = 1
-				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-				wait(Timer)
-				part:Destroy()
-			end
-		end
-		if pos.Position.Z < ZP then
-			for z = pos.Position.Z, ZP, ZTpEvery do
-				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
-				local part = Instance.new("Part", workspace)
-				part.Anchored = true
-				part.Size = Vector3.new(10, 0.1, 10)
-				part.Material = "Glass"
-				part.BrickColor = BrickColor.Random()
-				part.Transparency = 1
-				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-				wait(Timer)
-				part:Destroy()
-			end
-		else
-			for z = pos.Position.Z, ZP, -ZTpEvery do
-				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
-				local part = Instance.new("Part", workspace)
-				part.Anchored = true
-				part.Size = Vector3.new(10, 0.1, 10)
-				part.Material = "Glass"
-				part.BrickColor = BrickColor.Random()
-				part.Transparency = 1
-				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-				wait(Timer)
-				part:Destroy()
-			end
-		end
-		if pos.Position.Y < YP then
-			for High = pos.Position.Y, YP, YTpEvery do
-				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
-				local part = Instance.new("Part", workspace)
-				part.Anchored = true
-				part.Size = Vector3.new(10, 0.1, 10)
-				part.Material = "Glass"
-				part.BrickColor = BrickColor.Random()
-				part.Transparency = 1
-				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-				wait(Timer)
-				part:Destroy()
-			end
-		else
-			for High = pos.Position.Y, YP, -YTpEvery do
-				game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
-				local part = Instance.new("Part", workspace)
-				part.Anchored = true
-				part.Size = Vector3.new(10, 0.1, 10)
-				part.Material = "Glass"
-				part.BrickColor = BrickColor.Random()
-				part.Transparency = 1
-				part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-				wait(Timer)
-				part:Destroy()
-			end
-		end
-		game.Players.LocalPlayer.Character:MoveTo(Vector3.new(XP, YP, ZP))
-	end
-Teleport1(2, 6, -169)
- end)
-
-
-tab:Button("TP To Away Endzone", function()
-    local Teleport1 = function(XP, YP, ZP)
-        local XTpEvery = 8
-        local YTpEvery = 1
-        local ZTpEvery = 8
-        local Timer = 0.2
-        local pos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
-        if pos.Position.X < XP then
-            for x = pos.Position.X, XP, XTpEvery do
-                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
-                local part = Instance.new("Part", workspace)
-                part.Anchored = true
-                part.Size = Vector3.new(10, 0.1, 10)
-                part.Material = "Glass"
-                part.BrickColor = BrickColor.Random()
-                part.Transparency = 1
-                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-                wait(Timer)
-                part:Destroy()
-            end
-        else
-            for x = pos.Position.X, XP, -XTpEvery do
-                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
-                local part = Instance.new("Part", workspace)
-                part.Anchored = true
-                part.Size = Vector3.new(10, 0.1, 10)
-                part.Material = "Glass"
-                part.BrickColor = BrickColor.Random()
-                part.Transparency = 1
-                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-                wait(Timer)
-                part:Destroy()
-            end
-        end
-        if pos.Position.Z < ZP then
-            for z = pos.Position.Z, ZP, ZTpEvery do
-                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
-                local part = Instance.new("Part", workspace)
-                part.Anchored = true
-                part.Size = Vector3.new(10, 0.1, 10)
-                part.Material = "Glass"
-                part.BrickColor = BrickColor.Random()
-                part.Transparency = 1
-                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-                wait(Timer)
-                part:Destroy()
-            end
-        else
-            for z = pos.Position.Z, ZP, -ZTpEvery do
-                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
-                local part = Instance.new("Part", workspace)
-                part.Anchored = true
-                part.Size = Vector3.new(10, 0.1, 10)
-                part.Material = "Glass"
-                part.BrickColor = BrickColor.Random()
-                part.Transparency = 1
-                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-                wait(Timer)
-                part:Destroy()
-            end
-        end
-        if pos.Position.Y < YP then
-            for High = pos.Position.Y, YP, YTpEvery do
-                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
-                local part = Instance.new("Part", workspace)
-                part.Anchored = true
-                part.Size = Vector3.new(10, 0.1, 10)
-                part.Material = "Glass"
-                part.BrickColor = BrickColor.Random()
-                part.Transparency = 1
-                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-                wait(Timer)
-                part:Destroy()
-            end
-        else
-            for High = pos.Position.Y, YP, -YTpEvery do
-                game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
-                local part = Instance.new("Part", workspace)
-                part.Anchored = true
-                part.Size = Vector3.new(10, 0.1, 10)
-                part.Material = "Glass"
-                part.BrickColor = BrickColor.Random()
-                part.Transparency = 1
-                part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
-                wait(Timer)
-                part:Destroy()
-            end
-        end
-        game.Players.LocalPlayer.Character:MoveTo(Vector3.new(XP, YP, ZP))
-    end
-
-    Teleport1(-0, 6, 164)
- end)
-
 tab:Button("Auto Captain", function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Models.LockerRoomA.FinishLine.CFrame + Vector3.new(0, 2, 0)
         end)
@@ -532,6 +118,48 @@ elseif _G.CheckingTool == false then
 end
 end)
 
+
+tab:Toggle("Long Legs", {Toggled=false , Description = false}, function(bool)
+   __G.CheckingTool = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Left Leg'])
+Highlight.Enabled = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Right Leg'])
+Highlight.Enabled = bool
+getgenv().jjj = bool
+if getgenv().jjj == true then
+Playeer.Character['Left Leg'].Size = Vector3.new(1, _G.Legs, 1)
+Playeer.Character['Right Leg'].Size = Vector3.new(1, _G.Legs, 1)
+Playeer.Character['Left Leg'].Transparency = .999
+Playeer.Character['Right Leg'].Transparency = .999
+elseif getgenv().jjj == false then
+Playeer.Character['Left Leg'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Right Leg'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Left Leg'].Transparency = 0
+Playeer.Character['Right Leg'].Transparency = 0
+end
+end)
+
+tab:Slider("Long Arms Strength", 1, 40, 20, function(g)
+   _G.Arms = g
+if _G.CheckingTool == true then
+Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
+Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
+elseif _G.CheckingTool == false then
+
+end
+end)
+
+
+
+tab:Slider("Long Legs Height", 1, 40, 20, function(g)
+   _G.Legs = g
+if _G.CheckingTool == true then
+Playeer.Character['Left Leg'].Size = Vector3.new(1, _G.Legs, 1)
+Playeer.Character['Right Leg'].Size = Vector3.new(1, _G.Legs, 1)
+elseif _G.CheckingTool == false then
+		end
+end
+end)
 
 tab:Toggle("Infinite Jump", false, function(Value)
 --Toggles the infinite jump between on or off on every script run
