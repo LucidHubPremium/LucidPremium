@@ -324,6 +324,63 @@ if _G.infinJumpStarted == nil then
 end
    end,
 })
+ local Tab = Window:CreateTab("Physics") -- Title, Image
+
+
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local collisionEnabled = true
+
+local function setCharacterCollision(enabled)
+    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player and otherPlayer.Character then
+            for _, part in ipairs(otherPlayer.Character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = enabled
+                end
+            end
+        end
+    end
+end
+
+local function checkProximity()
+    while collisionEnabled do
+        wait(0.1) 
+
+        local characters = workspace:GetChildren()
+        for _, otherCharacter in ipairs(characters) do
+            if otherCharacter:IsA("Model") and otherCharacter:FindFirstChild("HumanoidRootPart") then
+                local distance = (humanoidRootPart.Position - otherCharacter.HumanoidRootPart.Position).magnitude
+                if distance <= 5 then
+                    setCharacterCollision(false) 
+                    wait(2) 
+                    setCharacterCollision(true) 
+                end
+            end
+        end
+    end
+end
+
+local toggleValue = false
+
+local Toggle = Tab:CreateToggle({
+Name = "Anti Jam",
+CurrentValue = false,
+Flag = "toggleValue",
+Callback = function(Value)
+    toggleValue = Value
+    collisionEnabled = Value
+    if Value then
+        checkProximity()
+    end
+end,
+	})
+
+
+
+
+
 
 local Tab = Window:CreateTab("Teleport") -- Title, Image
 
@@ -411,9 +468,86 @@ local PlaceID = game.PlaceId
 
     local Tab = Window:CreateTab("Visuals") -- Title, Image
 
-     local Section = Tab:CreateSection("Visuals")
+     local Section = Tab:CreateSection("Ball Visuals")
 
-     local Toggle = Tab:CreateToggle({
+
+
+
+
+
+
+local Tracers = {}
+     local DistanceLabels = {}
+     local tracerEnabled = false
+     
+     function AttachBall(Ball)
+         local RootPart = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
+         if RootPart then
+             if Ball then
+                 local Tracer = Drawing.new("Line")
+                 Tracer.Visible = false
+                 Tracer.Color = Color3.fromRGB(255, 0, 0)
+                 Tracer.Thickness = 1
+                 Tracer.Transparency = 1
+     
+                 local TextLabel = Drawing.new("Text")
+                 TextLabel.Text = ""
+                 TextLabel.Transparency = 1
+                 TextLabel.Visible = false
+                 TextLabel.Color = Color3.fromRGB(255, 0, 0)
+                 TextLabel.Size = 25
+     
+                 local con
+                 con = game:GetService("RunService").RenderStepped:Connect(function()
+                     if RootPart.Parent ~= nil and Ball.Parent ~= nil and tracerEnabled then
+                         local Vector, OnScreen = game.Workspace.CurrentCamera:WorldToViewportPoint(Ball.Position)
+                         local Vector2_, OnScreen2 = game.Workspace.CurrentCamera:WorldToViewportPoint(RootPart.Position)
+                         local Distance = (RootPart.Position - Ball.Position).Magnitude
+     
+                         if OnScreen and OnScreen2 then
+                             Tracer.From = Vector2.new(Vector2_.X, Vector2_.Y)
+                             Tracer.To = Vector2.new(Vector.X, Vector.Y)
+                             Tracer.Visible = true
+                             TextLabel.Visible = true
+     
+                             TextLabel.Text = tostring(math.floor(Distance)) .. "m"
+                             TextLabel.Position = Vector2.new(Vector.X, Vector.Y)
+     
+                             if Distance <= 50 then
+                                 TextLabel.Color = Color3.fromRGB(0, 255, 0)
+                                 Tracer.Color = Color3.fromRGB(0, 255, 0)
+                             else
+                                 TextLabel.Color = Color3.fromRGB(255, 0, 0)
+                                 Tracer.Color = Color3.fromRGB(255, 0, 0)
+                             end
+                         else
+                             Tracer.Visible = false
+                             TextLabel.Visible = false
+                         end
+                     else
+                         con:Disconnect()
+                         Tracer.Visible = false
+                         TextLabel.Visible = false
+                     end
+                 end)
+     
+                 table.insert(Tracers, Tracer)
+                 table.insert(DistanceLabels, TextLabel)
+             end
+         end
+     end
+     
+     workspace.ChildAdded:Connect(function(child)
+         if child.Name == "Football" then
+             if tracerEnabled then
+                 AttachBall(child)
+             end
+         end
+     end)
+
+
+
+local Toggle = Tab:CreateToggle({
    Name = "Ball Tracer",
    CurrentValue = false,
    Flag = "Toggle",
@@ -478,4 +612,162 @@ local PlaceID = game.PlaceId
                     line:Destroy()
                 end
         end)
-        
+
+
+local Section = Tab:CreateSection("Other Visuals")
+
+local Button = Tab:CreateButton({
+          Name = "Chat Spy",
+         Callback = function(v)
+                    --This script reveals ALL hidden messages in the default chat
+--chat "/spy" to toggle!
+enabled = true
+--if true will check your messages too
+spyOnMyself = true
+--if true will chat the logs publicly (fun, risky)
+public = false
+--if true will use /me to stand out
+publicItalics = true
+--customize private logs
+privateProperties = {
+    Color = Color3.fromRGB(62, 148, 240); 
+    Font = Enum.Font.SourceSansBold;
+    TextSize = 18;
+}
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
+local instance = (_G.chatSpyInstance or 0) + 1
+_G.chatSpyInstance = instance
+ 
+local function onChatted(p,msg)
+    if _G.chatSpyInstance == instance then
+        if p==player and msg:lower():sub(1,4)=="/spy" then
+            enabled = not enabled
+            wait(0.3)
+            privateProperties.Text = "[Lucid Premium Spy] "..(enabled and "EN" or "DIS").."ABLED:"
+            StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+        elseif enabled and (spyOnMyself==true or p~=player) then
+            msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
+            local hidden = true
+            local conn = getmsg.OnClientEvent:Connect(function(packet,channel)
+                if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and public==false and Players[packet.FromSpeaker].Team==player.Team)) then
+                    hidden = false
+                end
+            end)
+            wait(1)
+            conn:Disconnect()
+            if hidden and enabled then
+                if public then
+                    saymsg:FireServer((publicItalics and "/me " or '').."[Lucid Premium Spy] [".. p.Name .."]: "..msg,"All")
+                else
+                    privateProperties.Text = "[Lucid Premium Spy] [".. p.Name .."]: "..msg
+                    StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+                end
+            end
+        end
+    end
+end
+ 
+for _,p in ipairs(Players:GetPlayers()) do
+    p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end
+Players.PlayerAdded:Connect(function(p)
+    p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end)
+privateProperties.Text = "[Lucid Spy] "..(enabled and "en" or "dis").."abled"
+StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+local chatFrame = player.PlayerGui.Chat.Frame
+chatFrame.ChatChannelParentFrame.Visible = true
+chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
+                end,
+            })	
+
+
+
+local Section = Tab:CreateSection("Game Quality")
+
+
+local Button = Tab:CreateButton({
+          Name = "30 FPS",
+         Callback = function(v)
+getgenv().boostFPS = true -- // changing true to false will turn it off
+
+local vim = game:GetService("VirtualInputManager")
+setfpscap(30)
+
+game.DescendantAdded:Connect(function(d)
+   if d.Name == "MainView" and d.Parent.Name == "DevConsoleUI" and boostFPS then
+       task.wait()
+       local screen = d.Parent.Parent.Parent
+       screen.Enabled = false;
+       d.Visible = false;
+   end
+end)
+
+vim:SendKeyEvent(true, "F9", 0, game)
+wait()
+vim:SendKeyEvent(false, "F9", 0, game)
+
+while true do
+   task.wait()
+   if not boostFPS then
+       continue;
+   end
+
+   warn("")
+end
+		end
+	})
+
+
+
+
+
+local Button = Tab:CreateButton({
+          Name = "FPS Booster",
+         Callback = function(v)
+getgenv().boostFPS = true -- // changing true to false will turn it off
+
+local vim = game:GetService("VirtualInputManager")
+setfpscap(3000)
+
+game.DescendantAdded:Connect(function(d)
+   if d.Name == "MainView" and d.Parent.Name == "DevConsoleUI" and boostFPS then
+       task.wait()
+       local screen = d.Parent.Parent.Parent
+       screen.Enabled = false;
+       d.Visible = false;
+   end
+end)
+
+vim:SendKeyEvent(true, "F9", 0, game)
+wait()
+vim:SendKeyEvent(false, "F9", 0, game)
+
+while true do
+   task.wait()
+   if not boostFPS then
+       continue;
+   end
+
+   warn("")
+end
+		end
+	})
+
+
+
+local Button = Tab:CreateButton({
+          Name = "Disable Textures",
+         Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
+  end,
+	})
+
+
+
+
+
