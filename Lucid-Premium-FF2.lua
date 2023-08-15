@@ -169,31 +169,7 @@ local win = lib:Window("Lucid",Color3.fromRGB(66, 135, 245), Enum.KeyCode.RightC
 
 -----
 
-local wiihub = {
-	pv = true,
-	unitoggle = true,
-	blatoggle = true,
-	block = true,
-	blockslider = 1.5,
-	AutoFollowQb = true,
-	tprange = 0,
-	autocatchv = 0,	
-   }
 
-   local blatant = 0
-   local universal = 0
-
-
------ actual stuff
-local tab = win:Tab("Catching")
-
-tab:Toggle("Silent Pull Vector", false, function(Value)
-    pullVectorEnabled = Value  
-end)
-
-tab:Slider("Pull Vector Distance", 16, 30, 1, function(Value)
-    pullVectorMagnitude = Value  
-end)
 
 
 
