@@ -324,58 +324,6 @@ if _G.infinJumpStarted == nil then
 end
    end,
 })
- local Tab = Window:CreateTab("Physics") -- Title, Image
-
-
-local player = game.Players.LocalPlayer
-local character = player.Character
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local collisionEnabled = true
-
-local function setCharacterCollision(enabled)
-    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
-        if otherPlayer ~= player and otherPlayer.Character then
-            for _, part in ipairs(otherPlayer.Character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = enabled
-                end
-            end
-        end
-    end
-end
-
-local function checkProximity()
-    while collisionEnabled do
-        wait(0.1) 
-
-        local characters = workspace:GetChildren()
-        for _, otherCharacter in ipairs(characters) do
-            if otherCharacter:IsA("Model") and otherCharacter:FindFirstChild("HumanoidRootPart") then
-                local distance = (humanoidRootPart.Position - otherCharacter.HumanoidRootPart.Position).magnitude
-                if distance <= 5 then
-                    setCharacterCollision(false) 
-                    wait(2) 
-                    setCharacterCollision(true) 
-                end
-            end
-        end
-    end
-end
-
-local toggleValue = false
-
-local Toggle = Tab:CreateToggle({
-Name = "Anti Jam",
-CurrentValue = false,
-Flag = "toggleValue",
-Callback = function(Value)
-    toggleValue = Value
-    collisionEnabled = Value
-    if Value then
-        checkProximity()
-    end
-end,
-	})
 
 
 
