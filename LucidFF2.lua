@@ -13,7 +13,7 @@ CoreGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Coreloader.Name = "Coreloader"
 Coreloader.Parent = CoreGui
-Coreloader.BackgroundColor3 = Color3.new(0.211765, 0.211765, 0.211765)
+Coreloader.BackgroundColor3 = Color3.fromRGB(30, 31, 33)
 Coreloader.BorderColor3 = Color3.new(0, 0, 0)
 Coreloader.BorderSizePixel = 0
 Coreloader.Position = UDim2.new(0.35, 0, 0.36807102, 0)
@@ -21,7 +21,7 @@ Coreloader.Size = UDim2.new(0, 568, 0, 239)
 
 Loader.Name = "Loader"
 Loader.Parent = Coreloader
-Loader.BackgroundColor3 = Color3.new(0.372549, 0.117647, 0.458824)
+Loader.BackgroundColor3 = Color3.fromRGB(49, 50, 54)
 Loader.BorderColor3 = Color3.new(0, 0, 0)
 Loader.BorderSizePixel = 0
 Loader.Position = UDim2.new(0.0528169014, 0, 0.815899551, 0)
@@ -29,7 +29,7 @@ Loader.Size = UDim2.new(0, 507, 0, 8)
 
 Thing.Name = "Thing"
 Thing.Parent = Loader
-Thing.BackgroundColor3 = Color3.new(1, 0.172549, 1)
+Thing.BackgroundColor3 = Color3.fromRGB(27, 97, 227)
 Thing.BorderColor3 = Color3.new(0, 0, 0)
 Thing.BorderSizePixel = 0
 Thing.Size = UDim2.new(0, 0, 0, 8)
@@ -43,7 +43,7 @@ TextLabel2.BorderSizePixel = 0
 TextLabel2.Position = UDim2.new(0.0827464759, 0, 0.125523016, 0)
 TextLabel2.Size = UDim2.new(0, 473, 0, 50)
 TextLabel2.Font = Enum.Font.Gotham
-TextLabel2.Text = "Lucid"
+TextLabel2.Text = "Lucid Loader"
 TextLabel2.TextColor3 = Color3.new(1, 1, 1)
 TextLabel2.TextSize = 28
 
@@ -55,7 +55,7 @@ TextLabel.BorderSizePixel = 0
 TextLabel.Position = UDim2.new(0.107394367, 0, 0.882845163, 0)
 TextLabel.Size = UDim2.new(0, 441, 0, 19)
 TextLabel.Font = Enum.Font.Gotham
-TextLabel.Text = "Please wait loading wont take long..."
+TextLabel.Text = ""
 TextLabel.TextColor3 = Color3.new(1, 1, 1)
 TextLabel.TextSize = 14
 
@@ -87,15 +87,19 @@ end)
 wait(0.1)	
 
 function namechange1()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Checking Whitelist..."
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
 end
 
 function namechange2()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Authenticating..."
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
 end
 
 function namechange3()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Almost There..."
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
+end
+
+function namechange4()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Checking Whitelist..."
 end
 
 function starttween()
@@ -112,6 +116,8 @@ namechange2()
 wait(1.4)
 namechange3()
 wait(2.4)
+namechange4()
+wait(6.0)
 
 function endtween2()
 	local tweenInfo2 = TweenInfo.new(tween_time2, Enum.EasingStyle.Quad)
@@ -120,7 +126,7 @@ function endtween2()
 end
 endtween2()
 
-wait(3)
+wait(5)
 
 	game:GetService("CoreGui").CoreGui:Destroy()
 
@@ -196,20 +202,7 @@ local Window = Rayfield:CreateWindow({
 local MainTab = Window:CreateTab("Catching", nil) -- Title, Image
 local MainSection = MainTab:CreateSection("Player")
 
-Rayfield:Notify({
-   Title = "Authentication Success!",
-   Content = "",
-   Duration = 5,
-   Image = 13047715178,
-   Actions = { -- Notification Buttons
-      Ignore = {
-         Name = "Okay!",
-         Callback = function()
-         print("The user tapped Okay!")
-      end
-   },
-},
-})
+
 
 local Playeer = game.Players.LocalPlayer
 _G.CheckingTool = false
@@ -267,9 +260,9 @@ local MainSection = MainTab:CreateSection("Adjust")
 local Slider = MainTab:CreateSlider({
     Name = "Long Arms Reach",
     Range = {1, 40},
-    Increment = 20,
+    Increment = 1,
     Suffix = "Reach",
-    CurrentValue = 20,
+    CurrentValue = 1,
     Flag = "JPSlider",
     Callback = function(g)
       _G.Arms = g
@@ -298,7 +291,7 @@ elseif _G.CheckingTool == false then
 end,
   })
 
-
+local MainSection = MainTab:CreateSection("Other")
 
 local Toggle = MainTab:CreateToggle({
    Name = "Fake JP (Jump twice)",
