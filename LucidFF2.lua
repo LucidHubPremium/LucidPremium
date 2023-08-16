@@ -317,7 +317,8 @@ if _G.infinJumpStarted == nil then
             if k:byte() == 32  then
             humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
             humanoid:ChangeState('Jumping')
-            
+            wait()
+            humanoid:ChangeState('Seated')
             end
         end
     end)
