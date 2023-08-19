@@ -182,9 +182,125 @@ end
 
 local UILib = loadstring(game:HttpGet('https://raw.githubusercontent.com/StepBroFurious/Script/main/HydraHubUi.lua'))()
 local Window = UILib.new("Lucid", game.Players.LocalPlayer.UserId, "Buyer")
-local Category1 = Window:Category("Main", "http://www.roblox.com/asset/?id=8395621517")
-local SubButton1 = Category1:Button("Combat", "http://www.roblox.com/asset/?id=8395747586")
+local Category1 = Window:Category("Player", "http://www.roblox.com/asset/?id=8395621517")
+local SubButton1 = Category1:Button("Settings", "http://www.roblox.com/asset/?id=8395747586")
 local Section1 = SubButton1:Section("Humanoid", "Left")
+
+
+Section1:Button({
+    Title = "JumpPower",
+    ButtonName = "Enable",
+    Description = "Set JumpPower to 53",
+    }, function(value)
+    print(value)
+
+		        local Spoofed = {};
+        local Clone = game.Clone;
+        local oldIdx;
+        local oldNewIdx;
+        local OldNC;
+        
+        
+        local Player = game:GetService("Players").LocalPlayer;
+        
+        local Methods = {
+            "FindFirstChild",
+            "FindFirstChildOfClass",
+            "FindFirstChildWhichIsA"
+        }
+
+        local function SpoofProp(Instance, Property)
+            local Cloned = Clone(Instance);
+        
+            table.insert(Spoofed, {
+                Instance = Instance,
+                Property = Property;
+                ClonedInstance = Cloned;
+            })
+        end
+        
+        
+        oldIdx = hookmetamethod(game, "__index", function(self, key)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldIdx(v.ClonedInstance, key)
+                end
+        
+                if key == "Parent" and (self == v.ClonedInstance or self == v.Instance) and checkcaller() == false then
+                    return oldIdx(v.Instance, key)
+                end
+            end
+        
+            return oldIdx(self, key)
+        end)
+        
+        oldNewIdx = hookmetamethod(game, "__newindex", function(self, key, newval, ...)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldNewIdx(v.ClonedInstance, key, newval, ...);
+                end
+            end
+            return oldNewIdx(self, key, newval, ...)
+        end)
+        
+        OldNC = hookmetamethod(game, "__namecall", function(self, ...)
+            
+            local Method = getnamecallmethod();
+        
+            if not table.find(Methods, Method) or Player.Character == nil or self ~= Player.Character then
+                return OldNC(self, ...)
+            end
+            
+            local Results = OldNC(self, ...);
+        
+            if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                for i,v in next, Spoofed do
+                    if v.Instance == Results then
+                        return v.ClonedInstance
+                    end
+                end
+            end
+            return OldNC(self, ...)
+        end)
+        
+        for i, Method in next, Methods do
+            local Old;
+        
+            Old = hookfunction(game[Method], function(self, ...)
+                if not Player.Character or self ~= Player.Character then
+                    return Old(self, ...)
+                end
+        
+                local Results = Old(self, ...);
+        
+                if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                    for i,v in next, Spoofed do
+                        if v.Instance == Results then
+                            return v.ClonedInstance
+                        end
+                    end
+                end
+                return Old(self, ...)
+            end)
+        end
+        
+        SpoofProp(Player.Character.Humanoid, "JumpPower")      -- Here you can either change to walkspeed or "JumpPower"
+        Player.Character.Humanoid.JumpPower = 53             -- Change any value you want
+        
+        Player.CharacterAdded:Connect(function(character)
+            character:WaitForChild("Humanoid")
+            SpoofProp(character.Humanoid, "JumpPower")
+            character.Humanoid.JumpPower = 53
+        end)
+end)
+
+
+
+
+
+
+
+
 
 
 Section1:Button({
@@ -410,48 +526,7 @@ end)
 
 
 
-Section1:Toggle({
-    Title = "Infinite Jump",
-    Description = "",
-    Default = false
-    }, function(value)
-    print(value)
-
-   		
-       --Toggles the infinite jump between on or off on every script run
-_G.infinjump = not _G.infinjump
-
-if _G.infinJumpStarted == nil then
-    --Ensures this only runs once to save resources
-    _G.infinJumpStarted = true
-    
-    --Notifies readiness
-    game.StarterGui:SetCore("SendNotification", {Title="Youtube Hub"; Text="Infinite Jump Activated!"; Duration=5;})
-
-    --The actual infinite jump
-    local plr = game:GetService('Players').LocalPlayer
-    local m = plr:GetMouse()
-    m.KeyDown:connect(function(k)
-        if _G.infinjump then
-            if k:byte() == 32  then
-            humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
-            humanoid:ChangeState('Jumping')
-            wait()
-            humanoid:ChangeState('Seated')
-            end
-        end
-    end)
-end
-   end)
 
 
-		
-Section1:Slider({
-    Title = "Walkspeed",
-    Description = "",
-    Default = 16,
-    Min = 0,
-    Max = 120
-    }, function(value)
-    print(value)
-end)
+
+	
