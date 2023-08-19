@@ -183,6 +183,7 @@ end
 local UILib = loadstring(game:HttpGet('https://raw.githubusercontent.com/StepBroFurious/Script/main/HydraHubUi.lua'))()
 local Window = UILib.new("Lucid", game.Players.LocalPlayer.UserId, "Buyer")
 local Category1 = Window:Category("Player", "http://www.roblox.com/asset/?id=8395621517")
+local Category2 = Window:Category("Settings", "http://www.roblox.com/asset/?id=8395621517")
 local SubButton1 = Category1:Button("Settings", "http://www.roblox.com/asset/?id=8395747586")
 local Section1 = SubButton1:Section("Humanoid", "Left")
 
