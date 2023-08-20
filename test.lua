@@ -138,7 +138,7 @@ Section1:Slider({
     Max = 110
     }, function(value)
     print(value)
-     game.Players.LocalPlayer.Character.Humanoid.JumpPower = (value)            -- Change any value you want
+     game.Players.LocalPlayer.Character.Humanoid.JumpPower = value            -- Change any value you want
 end)
 		       
         
@@ -149,7 +149,7 @@ end)
 Player.CharacterAdded:Connect(function(character)
             character:WaitForChild("Humanoid")
             SpoofProp(character.Humanoid, "JumpPower")
-            character.Humanoid.JumpPower = (value)
+            character.Humanoid.JumpPower = value
         end)
 
 
