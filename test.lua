@@ -12,7 +12,7 @@ CoreGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Coreloader.Name = "Coreloader"
 Coreloader.Parent = CoreGui
-Coreloader.BackgroundColor3 = Color3.new(0.211765, 0.211765, 0.211765)
+Coreloader.BackgroundColor3 = Color3.fromRGB(30, 31, 33)
 Coreloader.BorderColor3 = Color3.new(0, 0, 0)
 Coreloader.BorderSizePixel = 0
 Coreloader.Position = UDim2.new(0.35, 0, 0.36807102, 0)
@@ -20,7 +20,7 @@ Coreloader.Size = UDim2.new(0, 568, 0, 239)
 
 Loader.Name = "Loader"
 Loader.Parent = Coreloader
-Loader.BackgroundColor3 = Color3.new(0.372549, 0.117647, 0.458824)
+Loader.BackgroundColor3 = Color3.fromRGB(49, 50, 54)
 Loader.BorderColor3 = Color3.new(0, 0, 0)
 Loader.BorderSizePixel = 0
 Loader.Position = UDim2.new(0.0528169014, 0, 0.815899551, 0)
@@ -28,7 +28,7 @@ Loader.Size = UDim2.new(0, 507, 0, 8)
 
 Thing.Name = "Thing"
 Thing.Parent = Loader
-Thing.BackgroundColor3 = Color3.new(1, 0.172549, 1)
+Thing.BackgroundColor3 = Color3.fromRGB(27, 97, 227)
 Thing.BorderColor3 = Color3.new(0, 0, 0)
 Thing.BorderSizePixel = 0
 Thing.Size = UDim2.new(0, 0, 0, 8)
@@ -42,7 +42,7 @@ TextLabel2.BorderSizePixel = 0
 TextLabel2.Position = UDim2.new(0.0827464759, 0, 0.125523016, 0)
 TextLabel2.Size = UDim2.new(0, 473, 0, 50)
 TextLabel2.Font = Enum.Font.Gotham
-TextLabel2.Text = "Lucid"
+TextLabel2.Text = "Lucid Loader"
 TextLabel2.TextColor3 = Color3.new(1, 1, 1)
 TextLabel2.TextSize = 28
 
@@ -54,7 +54,7 @@ TextLabel.BorderSizePixel = 0
 TextLabel.Position = UDim2.new(0.107394367, 0, 0.882845163, 0)
 TextLabel.Size = UDim2.new(0, 441, 0, 19)
 TextLabel.Font = Enum.Font.Gotham
-TextLabel.Text = "Please wait loading wont take long..."
+TextLabel.Text = ""
 TextLabel.TextColor3 = Color3.new(1, 1, 1)
 TextLabel.TextSize = 14
 
@@ -86,15 +86,19 @@ end)
 wait(0.1)	
 
 function namechange1()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Checking Whitelist..."
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
 end
 
 function namechange2()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Authenticating..."
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
 end
 
 function namechange3()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Bypassing..."
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
+end
+
+function namechange4()
+	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Loading UI.."
 end
 
 function starttween()
@@ -111,6 +115,8 @@ namechange2()
 wait(1.4)
 namechange3()
 wait(2.4)
+namechange4()
+wait(6.0)
 
 function endtween2()
 	local tweenInfo2 = TweenInfo.new(tween_time2, Enum.EasingStyle.Quad)
@@ -119,7 +125,9 @@ function endtween2()
 end
 endtween2()
 
-wait(10)
+wait(5)
+
+
 
 	game:GetService("CoreGui").CoreGui:Destroy()
 
@@ -359,6 +367,344 @@ Player.CharacterAdded:Connect(function(character)
 
 
 
+Section1:Button({
+    Title = "",
+    ButtonName = "Enable",
+    Description = "Set JumpPower to 52",
+    }, function(value)
+    print(value)
+
+		        local Spoofed = {};
+        local Clone = game.Clone;
+        local oldIdx;
+        local oldNewIdx;
+        local OldNC;
+        
+        
+        local Player = game:GetService("Players").LocalPlayer;
+        
+        local Methods = {
+            "FindFirstChild",
+            "FindFirstChildOfClass",
+            "FindFirstChildWhichIsA"
+        }
+
+        local function SpoofProp(Instance, Property)
+            local Cloned = Clone(Instance);
+        
+            table.insert(Spoofed, {
+                Instance = Instance,
+                Property = Property;
+                ClonedInstance = Cloned;
+            })
+        end
+        
+        
+        oldIdx = hookmetamethod(game, "__index", function(self, key)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldIdx(v.ClonedInstance, key)
+                end
+        
+                if key == "Parent" and (self == v.ClonedInstance or self == v.Instance) and checkcaller() == false then
+                    return oldIdx(v.Instance, key)
+                end
+            end
+        
+            return oldIdx(self, key)
+        end)
+        
+        oldNewIdx = hookmetamethod(game, "__newindex", function(self, key, newval, ...)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldNewIdx(v.ClonedInstance, key, newval, ...);
+                end
+            end
+            return oldNewIdx(self, key, newval, ...)
+        end)
+        
+        OldNC = hookmetamethod(game, "__namecall", function(self, ...)
+            
+            local Method = getnamecallmethod();
+        
+            if not table.find(Methods, Method) or Player.Character == nil or self ~= Player.Character then
+                return OldNC(self, ...)
+            end
+            
+            local Results = OldNC(self, ...);
+        
+            if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                for i,v in next, Spoofed do
+                    if v.Instance == Results then
+                        return v.ClonedInstance
+                    end
+                end
+            end
+            return OldNC(self, ...)
+        end)
+        
+        for i, Method in next, Methods do
+            local Old;
+        
+            Old = hookfunction(game[Method], function(self, ...)
+                if not Player.Character or self ~= Player.Character then
+                    return Old(self, ...)
+                end
+        
+                local Results = Old(self, ...);
+        
+                if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                    for i,v in next, Spoofed do
+                        if v.Instance == Results then
+                            return v.ClonedInstance
+                        end
+                    end
+                end
+                return Old(self, ...)
+            end)
+        end
+        
+        SpoofProp(Player.Character.Humanoid, "JumpPower")      -- Here you can either change to walkspeed or "JumpPower"
+        Player.Character.Humanoid.JumpPower = 52            -- Change any value you want
+        
+        Player.CharacterAdded:Connect(function(character)
+            character:WaitForChild("Humanoid")
+            SpoofProp(character.Humanoid, "JumpPower")
+            character.Humanoid.JumpPower = 52
+        end)
+end)
+
+
+
+
+
+
+
+
+
+
+Section1:Button({
+    Title = "",
+    ButtonName = "Enable",
+    Description = "Set Walkspeed to 45",
+    }, function(value)
+    print(value)
+
+		        local Spoofed = {};
+        local Clone = game.Clone;
+        local oldIdx;
+        local oldNewIdx;
+        local OldNC;
+        
+        
+        local Player = game:GetService("Players").LocalPlayer;
+        
+        local Methods = {
+            "FindFirstChild",
+            "FindFirstChildOfClass",
+            "FindFirstChildWhichIsA"
+        }
+
+        local function SpoofProp(Instance, Property)
+            local Cloned = Clone(Instance);
+        
+            table.insert(Spoofed, {
+                Instance = Instance,
+                Property = Property;
+                ClonedInstance = Cloned;
+            })
+        end
+        
+        
+        oldIdx = hookmetamethod(game, "__index", function(self, key)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldIdx(v.ClonedInstance, key)
+                end
+        
+                if key == "Parent" and (self == v.ClonedInstance or self == v.Instance) and checkcaller() == false then
+                    return oldIdx(v.Instance, key)
+                end
+            end
+        
+            return oldIdx(self, key)
+        end)
+        
+        oldNewIdx = hookmetamethod(game, "__newindex", function(self, key, newval, ...)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldNewIdx(v.ClonedInstance, key, newval, ...);
+                end
+            end
+            return oldNewIdx(self, key, newval, ...)
+        end)
+        
+        OldNC = hookmetamethod(game, "__namecall", function(self, ...)
+            
+            local Method = getnamecallmethod();
+        
+            if not table.find(Methods, Method) or Player.Character == nil or self ~= Player.Character then
+                return OldNC(self, ...)
+            end
+            
+            local Results = OldNC(self, ...);
+        
+            if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                for i,v in next, Spoofed do
+                    if v.Instance == Results then
+                        return v.ClonedInstance
+                    end
+                end
+            end
+            return OldNC(self, ...)
+        end)
+        
+        for i, Method in next, Methods do
+            local Old;
+        
+            Old = hookfunction(game[Method], function(self, ...)
+                if not Player.Character or self ~= Player.Character then
+                    return Old(self, ...)
+                end
+        
+                local Results = Old(self, ...);
+        
+                if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                    for i,v in next, Spoofed do
+                        if v.Instance == Results then
+                            return v.ClonedInstance
+                        end
+                    end
+                end
+                return Old(self, ...)
+            end)
+        end
+        
+        SpoofProp(Player.Character.Humanoid, "WalkSpeed")      -- Here you can either change to walkspeed or "JumpPower"
+        Player.Character.Humanoid.WalkSpeed = 45              -- Change any value you want
+        
+        Player.CharacterAdded:Connect(function(character)
+            character:WaitForChild("Humanoid")
+            SpoofProp(character.Humanoid, "WalkSpeed")
+            character.Humanoid.WalkSpeed = 45
+        end)
+end)
+
+
+Section1:Button({
+    Title = "",
+    ButtonName = "Enable",
+    Description = "Set HipHeight to 16",
+    }, function(value)
+    print(value)
+
+		        local Spoofed = {};
+        local Clone = game.Clone;
+        local oldIdx;
+        local oldNewIdx;
+        local OldNC;
+        
+        
+        local Player = game:GetService("Players").LocalPlayer;
+        
+        local Methods = {
+            "FindFirstChild",
+            "FindFirstChildOfClass",
+            "FindFirstChildWhichIsA"
+        }
+
+        local function SpoofProp(Instance, Property)
+            local Cloned = Clone(Instance);
+        
+            table.insert(Spoofed, {
+                Instance = Instance,
+                Property = Property;
+                ClonedInstance = Cloned;
+            })
+        end
+        
+        
+        oldIdx = hookmetamethod(game, "__index", function(self, key)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldIdx(v.ClonedInstance, key)
+                end
+        
+                if key == "Parent" and (self == v.ClonedInstance or self == v.Instance) and checkcaller() == false then
+                    return oldIdx(v.Instance, key)
+                end
+            end
+        
+            return oldIdx(self, key)
+        end)
+        
+        oldNewIdx = hookmetamethod(game, "__newindex", function(self, key, newval, ...)
+            for i,v in next, Spoofed do
+                if self == v.Instance and key == v.Property and not checkcaller() then
+                    return oldNewIdx(v.ClonedInstance, key, newval, ...);
+                end
+            end
+            return oldNewIdx(self, key, newval, ...)
+        end)
+        
+        OldNC = hookmetamethod(game, "__namecall", function(self, ...)
+            
+            local Method = getnamecallmethod();
+        
+            if not table.find(Methods, Method) or Player.Character == nil or self ~= Player.Character then
+                return OldNC(self, ...)
+            end
+            
+            local Results = OldNC(self, ...);
+        
+            if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                for i,v in next, Spoofed do
+                    if v.Instance == Results then
+                        return v.ClonedInstance
+                    end
+                end
+            end
+            return OldNC(self, ...)
+        end)
+        
+        for i, Method in next, Methods do
+            local Old;
+        
+            Old = hookfunction(game[Method], function(self, ...)
+                if not Player.Character or self ~= Player.Character then
+                    return Old(self, ...)
+                end
+        
+                local Results = Old(self, ...);
+        
+                if Results and Results:IsA("Humanoid") and Player.Character and self == Player.Character then
+                    for i,v in next, Spoofed do
+                        if v.Instance == Results then
+                            return v.ClonedInstance
+                        end
+                    end
+                end
+                return Old(self, ...)
+            end)
+        end
+        
+        SpoofProp(Player.Character.Humanoid, "HipHeight")      -- Here you can either change to walkspeed or "JumpPower"
+        Player.Character.Humanoid.HipHeight = 16           -- Change any value you want
+        
+        Player.CharacterAdded:Connect(function(character)
+            character:WaitForChild("Humanoid")
+            SpoofProp(character.Humanoid, "HipHeight")
+            character.Humanoid.HipHeight = 16
+        end)
+end)
+
+
+
+
+
+
+
+
 local Tracers = {}
      local DistanceLabels = {}
      local tracerEnabled = false
@@ -548,7 +894,7 @@ Section2:Button({
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
 	end)
-
+	
 
 
 
