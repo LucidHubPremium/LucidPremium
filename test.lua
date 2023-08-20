@@ -1,194 +1,14 @@
-local CoreGui = Instance.new("ScreenGui")
-local Coreloader = Instance.new("Frame")
-local Loader = Instance.new("Frame")
-local Thing = Instance.new("Frame")
-local TextLabel2 = Instance.new("TextLabel")
-local TextLabel = Instance.new("TextLabel")
-local TextButton = Instance.new("TextButton")
- 
-CoreGui.Name = "CoreGui"
-CoreGui.Parent = game.CoreGui
-CoreGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-Coreloader.Name = "Coreloader"
-Coreloader.Parent = CoreGui
-Coreloader.BackgroundColor3 = Color3.fromRGB(30, 31, 33)
-Coreloader.BorderColor3 = Color3.new(0, 0, 0)
-Coreloader.BorderSizePixel = 0
-Coreloader.Position = UDim2.new(0.35, 0, 0.36807102, 0)
-Coreloader.Size = UDim2.new(0, 568, 0, 239)
-
-Loader.Name = "Loader"
-Loader.Parent = Coreloader
-Loader.BackgroundColor3 = Color3.fromRGB(49, 50, 54)
-Loader.BorderColor3 = Color3.new(0, 0, 0)
-Loader.BorderSizePixel = 0
-Loader.Position = UDim2.new(0.0528169014, 0, 0.815899551, 0)
-Loader.Size = UDim2.new(0, 507, 0, 8)
-
-Thing.Name = "Thing"
-Thing.Parent = Loader
-Thing.BackgroundColor3 = Color3.fromRGB(27, 97, 227)
-Thing.BorderColor3 = Color3.new(0, 0, 0)
-Thing.BorderSizePixel = 0
-Thing.Size = UDim2.new(0, 0, 0, 8)
-
-TextLabel2.Name = "TextLabel2"
-TextLabel2.Parent = Coreloader
-TextLabel2.BackgroundColor3 = Color3.new(1, 1, 1)
-TextLabel2.BackgroundTransparency = 1
-TextLabel2.BorderColor3 = Color3.new(0, 0, 0)
-TextLabel2.BorderSizePixel = 0
-TextLabel2.Position = UDim2.new(0.0827464759, 0, 0.125523016, 0)
-TextLabel2.Size = UDim2.new(0, 473, 0, 50)
-TextLabel2.Font = Enum.Font.Gotham
-TextLabel2.Text = "Lucid Loader"
-TextLabel2.TextColor3 = Color3.new(1, 1, 1)
-TextLabel2.TextSize = 28
-
-TextLabel.Parent = Coreloader
-TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
-TextLabel.BackgroundTransparency = 1
-TextLabel.BorderColor3 = Color3.new(0, 0, 0)
-TextLabel.BorderSizePixel = 0
-TextLabel.Position = UDim2.new(0.107394367, 0, 0.882845163, 0)
-TextLabel.Size = UDim2.new(0, 441, 0, 19)
-TextLabel.Font = Enum.Font.Gotham
-TextLabel.Text = ""
-TextLabel.TextColor3 = Color3.new(1, 1, 1)
-TextLabel.TextSize = 14
-
-TextButton.Parent = Coreloader
-TextButton.BackgroundColor3 = Color3.new(0.176471, 0.176471, 0.176471)
-TextButton.BorderColor3 = Color3.new(0, 0, 0)
-TextButton.BorderSizePixel = 0
-TextButton.Position = UDim2.new(0.383802831, 0, 0.430962354, 0)
-TextButton.Size = UDim2.new(0, 130, 0, 50)
-TextButton.Font = Enum.Font.Gotham
-TextButton.Text = "Copy Discord Link"
-TextButton.TextColor3 = Color3.new(1, 1, 1)
-TextButton.TextSize = 14
-
-
-
-local frame = game:GetService("CoreGui").CoreGui.Coreloader.Loader.Thing
-local guisize = UDim2.new(0, 509,0, 8)
-local tween_time = math.random(4,5)
-local tween_time2 = 2
-local frame2 = game:GetService("CoreGui").CoreGui.Coreloader
-local guipos = UDim2.new(0.35, 0,-0.500, 0)
-local button = game:GetService("CoreGui").CoreGui.Coreloader.TextButton
-
-button.MouseButton1Click:Connect(function()
-setclipboard("https://discord.gg/hwmCFgppQH")
-end)
-
-wait(0.1)	
-
-function namechange1()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
-end
-
-function namechange2()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
-end
-
-function namechange3()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Lucid Loader"
-end
-
-function namechange4()
-	game:GetService("CoreGui").CoreGui.Coreloader.TextLabel2.Text = "Checking Whitelist..."
-end
-
-function starttween()
-	local tweenInfo = TweenInfo.new(tween_time, Enum.EasingStyle.Linear)
-	local tween = game:GetService("TweenService"):Create(frame, tweenInfo, {Size = guisize})
-	tween:Play()
-end	
-wait(0.5)
-starttween()
-wait(1)
-namechange1()
-wait(1.2)
-namechange2()
-wait(1.4)
-namechange3()
-wait(2.4)
-namechange4()
-wait(6.0)
-
-function endtween2()
-	local tweenInfo2 = TweenInfo.new(tween_time2, Enum.EasingStyle.Quad)
-	local tween2 = game:GetService("TweenService"):Create(frame2, tweenInfo2, {Position = guipos})
-	tween2:Play()
-end
-endtween2()
-
-wait(5)
-
-
-
-
-
-
-
-
-
-
-
-
-do --//
-	local coreGui = game:GetService("CoreGui")
-	local contentProvider = game:GetService('ContentProvider')
-	local tbl = {}
-	
-	for index, descendant in pairs(coreGui:GetDescendants()) do
-		if descendant:IsA("ImageLabel") and string.find(descendant.Image, "rbxasset://") then
-			table.insert(tbl, descendant.Image)
-		end
-	end
-	
-	local preloadAsync; preloadAsync = hookfunction(contentProvider.PreloadAsync, function(self, ...)
-		local args = {...}
-		if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) then
-			args[1] = tbl
-			return preloadAsync(self, unpack(args))
-		end
-		return preloadAsync(self, ...)
-	end)
-	
-	local function compareMethod(m1, m2)
-		return string.lower(m1) == string.lower(m2)
-	end
-	
-	local __namecall; __namecall = hookmetamethod(game, "__namecall", function(self, ...)
-		local args = {...}
-		local method = getnamecallmethod()
-		if not checkcaller() and type(args[1]) == "table" and table.find(args[1], coreGui) and self == contentProvider and compareMethod("PreloadAsync", method) then
-			args[1] = tbl
-			return __namecall(self, unpack(args))
-		end
-		return __namecall(self, ...)
-	end)
-end
-
-
-
-
-
-
-
-
 local UILib = loadstring(game:HttpGet('https://raw.githubusercontent.com/StepBroFurious/Script/main/HydraHubUi.lua'))()
 local Window = UILib.new("Lucid", game.Players.LocalPlayer.UserId, "Buyer")
 local Category1 = Window:Category("Player", "http://www.roblox.com/asset/?id=8395621517")
 local Category2 = Window:Category("Settings", "http://www.roblox.com/asset/?id=8395621517")
-local SubButton1 = Category1:Button("Settings", "http://www.roblox.com/asset/?id=8395747586")
+local SubButton1 = Category1:Button("ㅤ|", "")
+local SubButton2 = Category2:Button("ㅤ", "")
 local Section1 = SubButton1:Section("Humanoid", "Left")
+local Section2 = SubButton2:Section("Settings", "Left")
 
 
-		        local Spoofed = {};
+	local Spoofed = {};
         local Clone = game.Clone;
         local oldIdx;
         local oldNewIdx;
@@ -313,23 +133,23 @@ Player.CharacterAdded:Connect(function(character)
 Section1:Slider({
     Title = "JumpPower",
     Description = "",
-    Default = 50,
+    Default = 0,
     Min = 0,
     Max = 110
     }, function(value)
     print(value)
-     Player.Character.Humanoid.JumpPower = value            -- Change any value you want
+     game.Players.LocalPlayer.Character.Humanoid.JumpPower = (value)            -- Change any value you want
 end)
 		       
         
-        SpoofProp(Player.Character.Humanoid, "JumpPower")      -- Here you can either change to walkspeed or "JumpPower"
+        SpoofProp(game.Players.LocalPlayer.Character.Humanoid, "JumpPower")      -- Here you can either change to walkspeed or "JumpPower"
       
       
 
 Player.CharacterAdded:Connect(function(character)
             character:WaitForChild("Humanoid")
             SpoofProp(character.Humanoid, "JumpPower")
-            character.Humanoid.JumpPower = value
+            character.Humanoid.JumpPower = (value)
         end)
 
 
@@ -363,4 +183,197 @@ Player.CharacterAdded:Connect(function(character)
 
 
 
-	
+
+local Tracers = {}
+     local DistanceLabels = {}
+     local tracerEnabled = false
+     
+     function AttachBall(Ball)
+         local RootPart = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
+         if RootPart then
+             if Ball then
+                 local Tracer = Drawing.new("Line")
+                 Tracer.Visible = false
+                 Tracer.Color = Color3.fromRGB(255, 0, 0)
+                 Tracer.Thickness = 1
+                 Tracer.Transparency = 1
+     
+                 local TextLabel = Drawing.new("Text")
+                 TextLabel.Text = ""
+                 TextLabel.Transparency = 1
+                 TextLabel.Visible = false
+                 TextLabel.Color = Color3.fromRGB(255, 0, 0)
+                 TextLabel.Size = 25
+     
+                 local con
+                 con = game:GetService("RunService").RenderStepped:Connect(function()
+                     if RootPart.Parent ~= nil and Ball.Parent ~= nil and tracerEnabled then
+                         local Vector, OnScreen = game.Workspace.CurrentCamera:WorldToViewportPoint(Ball.Position)
+                         local Vector2_, OnScreen2 = game.Workspace.CurrentCamera:WorldToViewportPoint(RootPart.Position)
+                         local Distance = (RootPart.Position - Ball.Position).Magnitude
+     
+                         if OnScreen and OnScreen2 then
+                             Tracer.From = Vector2.new(Vector2_.X, Vector2_.Y)
+                             Tracer.To = Vector2.new(Vector.X, Vector.Y)
+                             Tracer.Visible = true
+                             TextLabel.Visible = true
+     
+                             TextLabel.Text = tostring(math.floor(Distance)) .. "m"
+                             TextLabel.Position = Vector2.new(Vector.X, Vector.Y)
+     
+                             if Distance <= 50 then
+                                 TextLabel.Color = Color3.fromRGB(0, 255, 0)
+                                 Tracer.Color = Color3.fromRGB(0, 255, 0)
+                             else
+                                 TextLabel.Color = Color3.fromRGB(255, 0, 0)
+                                 Tracer.Color = Color3.fromRGB(255, 0, 0)
+                             end
+                         else
+                             Tracer.Visible = false
+                             TextLabel.Visible = false
+                         end
+                     else
+                         con:Disconnect()
+                         Tracer.Visible = false
+                         TextLabel.Visible = false
+                     end
+                 end)
+     
+                 table.insert(Tracers, Tracer)
+                 table.insert(DistanceLabels, TextLabel)
+             end
+         end
+     end
+     
+     workspace.ChildAdded:Connect(function(child)
+         if child.Name == "Football" then
+             if tracerEnabled then
+                 AttachBall(child)
+             end
+         end
+     end)
+
+
+
+Section2:Toggle({
+    Title = "Ball Tracer",
+    Description = "",
+    Default = false
+    }, function(enabled)
+    print(enabled)
+   tracerEnabled = enabled
+    
+        if not enabled then
+            
+            for _, tracer in ipairs(Tracers) do
+                tracer:Remove()
+            end
+    
+            for _, label in ipairs(DistanceLabels) do
+                label:Remove()
+            end
+    
+            Tracers = {}
+            DistanceLabels = {}
+        else
+    
+            for _, child in ipairs(workspace:GetChildren()) do
+                if child.Name == "Football" then
+                    AttachBall(child)
+                end
+            end
+        end
+     end)
+
+
+
+
+
+
+Section2:Button({
+    Title = "Chat Spy",
+    ButtonName = "Enable",
+    Description = "See Private Msgs",
+    }, function(value)
+    print(value)
+ --This script reveals ALL hidden messages in the default chat
+--chat "/spy" to toggle!
+enabled = true
+--if true will check your messages too
+spyOnMyself = true
+--if true will chat the logs publicly (fun, risky)
+public = false
+--if true will use /me to stand out
+publicItalics = true
+--customize private logs
+privateProperties = {
+    Color = Color3.fromRGB(62, 148, 240); 
+    Font = Enum.Font.SourceSansBold;
+    TextSize = 18;
+}
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
+local instance = (_G.chatSpyInstance or 0) + 1
+_G.chatSpyInstance = instance
+ 
+local function onChatted(p,msg)
+    if _G.chatSpyInstance == instance then
+        if p==player and msg:lower():sub(1,4)=="/spy" then
+            enabled = not enabled
+            wait(0.3)
+            privateProperties.Text = "[Lucid Premium Spy] "..(enabled and "EN" or "DIS").."ABLED:"
+            StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+        elseif enabled and (spyOnMyself==true or p~=player) then
+            msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
+            local hidden = true
+            local conn = getmsg.OnClientEvent:Connect(function(packet,channel)
+                if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and public==false and Players[packet.FromSpeaker].Team==player.Team)) then
+                    hidden = false
+                end
+            end)
+            wait(1)
+            conn:Disconnect()
+            if hidden and enabled then
+                if public then
+                    saymsg:FireServer((publicItalics and "/me " or '').."[Lucid Premium Spy] [".. p.Name .."]: "..msg,"All")
+                else
+                    privateProperties.Text = "[Lucid Premium Spy] [".. p.Name .."]: "..msg
+                    StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+                end
+            end
+        end
+    end
+end
+ 
+for _,p in ipairs(Players:GetPlayers()) do
+    p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end
+Players.PlayerAdded:Connect(function(p)
+    p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end)
+privateProperties.Text = "[Lucid Spy] "..(enabled and "en" or "dis").."abled"
+StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+local chatFrame = player.PlayerGui.Chat.Frame
+chatFrame.ChatChannelParentFrame.Visible = true
+chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
+                end)
+
+
+
+
+Section2:Button({
+    Title = "No Textures",
+    ButtonName = "Enable",
+    Description = "Increases FPS",
+    }, function(value)
+    print(value)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord.gg-rips/main/FPSBooster.lua"))()
+	end)
+
+
+
+
