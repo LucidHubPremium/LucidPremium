@@ -525,6 +525,72 @@ end)
 
 
 
+local autokick = false 
+
+task.spawn(function()
+
+getgenv().Variables = {}
+
+	Variables.Players = game:GetService("Players")
+	Variables.ReplicatedStorage = game:GetService("ReplicatedStorage")
+	Variables.UserInputService = game:GetService("UserInputService")
+	Variables.Client = Variables.Players.LocalPlayer
+	Variables.Character = Variables.Client.Character or Variables.Client.CharacterAdded:Wait()
+
+	Variables.Client.CharacterAdded:Connect(function(Character)
+		Variables.Character = Character 
+	end)
+
+	local Aimbot = {}
+
+	function Aimbot:GetAccuracyArrow(Arrows)
+		local Y = 0
+		local Arrow1 = nil
+
+		for _, Arrow in pairs(Arrows) do
+			if Arrow.Position.Y.Scale > Y then
+				Y = Arrow.Position.Y.Scale
+				Arrow1 = Arrow 
+			end
+		end
+
+		return Arrow1
+	end
+
+	Variables.Client.PlayerGui.ChildAdded:Connect(function(child)
+		if child.Name == "KickerGui" and autokick == true then
+			local KickerGui = child 
+			local Meter = KickerGui:FindFirstChild("Meter")
+			local Cursor = Meter:FindFirstChild("Cursor")
+			local Arrows = {}
+
+			for i,v in pairs(Meter:GetChildren()) do
+				if string.find(v.Name:lower(), "arrow") then
+					table.insert(Arrows, v)
+				end
+			end 
+
+			repeat task.wait() until Cursor.Position.Y.Scale < 0.02
+			mouse1click()
+			repeat task.wait() until Cursor.Position.Y.Scale >= Aimbot:GetAccuracyArrow(Arrows).Position.Y.Scale + (.03 / (100 / 100))
+			mouse1click()
+		end
+	end)
+end)
+
+t6:NewToggle("Auto Kick", false, function(v)
+	autokick = v
+end)
+
+
+Section1:Toggle({
+    Title = "Kicker Aimbot",
+    Description = "Automatically Kicks For You",
+    Default = false
+    }, function(v)
+    print(value)
+		autokick = v
+end)
 
 
 
