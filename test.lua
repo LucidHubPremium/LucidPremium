@@ -193,7 +193,7 @@ local SubButton1 = Category1:Button("-", "")
 local SubButton2 = Category2:Button("--", "")
 local SubButton3 = Category3:Button("---", "")
 local SubButton4 = Category4:Button("----", "")
-local Section12 = SubButton12:Section("Customizable Mags", "Left")
+local Section12 = SubButton12:Section("Regular Mags", "Left")
 local Section1 = SubButton1:Section("Humanoid", "Left")
 local Section2 = SubButton2:Section("Settings", "Left")
 local Section3 = SubButton3:Section("Kicking", "Left")
@@ -237,36 +237,47 @@ local Mouse = Players.LocalPlayer:GetMouse()
 local numTeleports = 30 -- Define the number of teleports
 local tooggleEnabled = false -- Variable to track the toggle state
 
-local function universalcatch()
-	if tooggleEnabled then
-		local catchRight = Players.LocalPlayer.Character:FindFirstChild("CatchRight")
+local regtog = false -- Variable to track the toggle state
 
-		if not catchRight then
-			return
-		end
+local function teleportToClosestFootball()
+	if regtog == true then
+		task.wait()
+		uis.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				local catchRight = Players.LocalPlayer.Character:FindFirstChild("CatchRight")
 
-		local closestFootball = nil
-		local closestDistance = math.huge
+				if not catchRight then
+					return
+				end
 
-		for i, v in pairs(game.Workspace:GetDescendants()) do
-			if v.Name == "Football" and v:IsA("BasePart") then
-				local distance = (v.Position - catchRight.Position).Magnitude
-				if distance < closestDistance and distance <= universal then
-					v.CanCollide = false
-					closestDistance = distance
-					closestFootball = v
+				local closestFootball = nil
+				local closestDistance = math.huge
+
+				for i, v in pairs(game.Workspace:GetDescendants()) do
+					if v.Name == "Football" and v:IsA("BasePart") then
+						local distance = (v.Position - catchRight.Position).Magnitude
+						if distance < closestDistance and distance <= blatant then
+							v.CanCollide = false
+							closestDistance = distance
+							closestFootball = v
+						end
+					end
+				end
+
+				-- Teleport the closest football if found
+				if closestFootball then
+					for _ = 1, numTeleports do
+						if regtog == true then
+							wait(regDelay)
+							local tweenService = game:GetService("TweenService")
+							local tweenInfo = TweenInfo.new(.05, Enum.EasingStyle.Linear)
+							tweenService:Create(closestFootball, tweenInfo, {CFrame = catchRight.CFrame}):Play()
+							wait(.05)
+						end
+					end
 				end
 			end
-		end
-
-		if closestFootball then
-				wait(uniDelay)
-			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
-			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
-			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
-			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
-			task.wait()
-		end
+		end)
 	end
 end
 
@@ -279,17 +290,18 @@ end
 
 
 Section12:Toggle({
-    Title = "Mags",
+    Title = "Regular Mags",
     Description = "",
     Default = false
     }, function(v)
     print(enabled)
-   tooggleEnabled = v
-	while tooggleEnabled == true do
+  regtog = v
+	if regtog == true then
 		task.wait()
-		universalcatch()
+		teleportToClosestFootball()
 	end
 end)
+
 
 
 
@@ -303,7 +315,7 @@ Section12:Slider({
     }, function(v)
     print(value)
 		
-    uniDelay = v
+    regDelay = v
 end)
 
 Section12:Slider({
@@ -311,11 +323,11 @@ Section12:Slider({
     Description = "",
     Default = 0,
     Min = 0,
-    Max = 30,
+    Max = 60,
     }, function(v)
     print(value)
 		
-    universal = v
+    blatant = v
 end)
 
 
