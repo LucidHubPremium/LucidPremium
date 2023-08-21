@@ -183,18 +183,157 @@ local tooggleEnabled = false -- Variable to track the toggle state
 
 local UILib = loadstring(game:HttpGet('https://raw.githubusercontent.com/StepBroFurious/Script/main/HydraHubUi.lua'))()
 local Window = UILib.new("Lucid", game.Players.LocalPlayer.UserId, "Buyer")
+local Category12 = Window:Category("Catching", "http://www.roblox.com/asset/?id=8395621517")
 local Category1 = Window:Category("Player", "http://www.roblox.com/asset/?id=8395621517")
 local Category2 = Window:Category("Settings", "http://www.roblox.com/asset/?id=8395621517")
 local Category3 = Window:Category("Kicking", "http://www.roblox.com/asset/?id=8395621517")
 local Category4 = Window:Category("Physics", "http://www.roblox.com/asset/?id=8395621517")
+local SubButton12 = Category12:Button(".", "")
 local SubButton1 = Category1:Button("-", "")
 local SubButton2 = Category2:Button("--", "")
 local SubButton3 = Category3:Button("---", "")
 local SubButton4 = Category4:Button("----", "")
+local Section12 = SubButton12:Section("Customizable Mags", "Left")
 local Section1 = SubButton1:Section("Humanoid", "Left")
 local Section2 = SubButton2:Section("Settings", "Left")
 local Section3 = SubButton3:Section("Kicking", "Left")
 local Section4 = SubButton4:Section("Enhancement", "Left")
+
+
+
+
+
+
+
+
+local wiihub = {
+	pv = true,
+	unitoggle = true,
+	blatoggle = true,
+	block = true,
+	AutoFollowQb = true,
+	tprange = 0,
+	autocatchv = 0,
+}
+
+local players = game:GetService("Players")
+local userInputService = game:GetService("UserInputService")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local remotes = replicatedStorage:FindFirstChild("Remotes")
+local characterSoundEvent = remotes:FindFirstChild("CharacterSoundEvent")
+local player = players.LocalPlayer
+local runService = game:GetService("RunService")
+
+local blatant = 0
+local universal = 0
+local uis = game:GetService("UserInputService")
+local uniDelay = 0
+local regDelay = 0
+
+-- Functions
+
+local Players = game:GetService("Players")
+local Mouse = Players.LocalPlayer:GetMouse()
+local numTeleports = 30 -- Define the number of teleports
+local tooggleEnabled = false -- Variable to track the toggle state
+
+local function universalcatch()
+	if tooggleEnabled then
+		local catchRight = Players.LocalPlayer.Character:FindFirstChild("CatchRight")
+
+		if not catchRight then
+			return
+		end
+
+		local closestFootball = nil
+		local closestDistance = math.huge
+
+		for i, v in pairs(game.Workspace:GetDescendants()) do
+			if v.Name == "Football" and v:IsA("BasePart") then
+				local distance = (v.Position - catchRight.Position).Magnitude
+				if distance < closestDistance and distance <= universal then
+					v.CanCollide = false
+					closestDistance = distance
+					closestFootball = v
+				end
+			end
+		end
+
+		if closestFootball then
+				wait(uniDelay)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
+			task.wait()
+		end
+	end
+end
+
+
+
+
+
+
+
+
+
+Section12:Toggle({
+    Title = "Mags",
+    Description = "",
+    Default = false
+    }, function(v)
+    print(enabled)
+   tooggleEnabled = v
+	while tooggleEnabled == true do
+		task.wait()
+		universalcatch()
+	end
+end)
+
+
+
+
+Section12:Slider({
+    Title = "Mag Delay",
+    Description = "",
+    Default = 0,
+    Min = 0,
+    Max = 1,
+    }, function(v)
+    print(value)
+		
+    uniDelay = v
+end)
+
+Section12:Slider({
+    Title = "Mag Range",
+    Description = "",
+    Default = 0,
+    Min = 0,
+    Max = 30,
+    }, function(v)
+    print(value)
+		
+    universal = v
+end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	local Spoofed = {};
         local Clone = game.Clone;
@@ -321,7 +460,7 @@ Player.CharacterAdded:Connect(function(character)
 Section1:Slider({
     Title = "JumpPower",
     Description = "",
-    Default = 0,
+    Default = 50,
     Min = 0,
     Max = 110
     }, function(value)
