@@ -294,7 +294,7 @@ Section12:Toggle({
     Description = "",
     Default = false
     }, function(v)
-    print(enabled)
+    print(v)
   regtog = v
 	if regtog == true then
 		task.wait()
@@ -313,7 +313,7 @@ Section12:Slider({
     Min = 0,
     Max = 1,
     }, function(v)
-    print(value)
+    print(v)
 		
     regDelay = v
 end)
@@ -325,7 +325,7 @@ Section12:Slider({
     Min = 0,
     Max = 60,
     }, function(v)
-    print(value)
+    print(v)
 		
     blatant = v
 end)
@@ -1203,3 +1203,55 @@ end)
 
 
 game:GetService("UserInputService").InputBegan:Connect(onKeyPress)
+
+
+
+
+
+
+
+
+
+
+
+local connection
+
+Section4:Toggle({
+    Title = "Click Tackle TP",
+    Description = "",
+    Default = false
+    }, function(v)
+    print(v)
+		if v then
+		connection = game.Players.LocalPlayer:GetMouse().Button1Down:Connect(function()
+			for i, v in pairs(game.workspace:GetDescendants()) do
+				if v.Name == "Football" and v:IsA("Tool") then
+					local toolPosition = v.Parent.HumanoidRootPart.Position
+					local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+					if (toolPosition - playerPosition).Magnitude <= tprange then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent.HumanoidRootPart.CFrame + Vector3.new(1, 1, 1)
+					end
+				end
+			end
+		end)
+	else
+		if connection then
+			connection:Disconnect() -- Disconnect the mouse click event only if it exists
+		end
+	end
+end)
+
+
+
+
+
+Section4:Slider({
+    Title = "TP Range",
+    Description = "",
+    Default = 20,
+    Min = 0,
+    Max = 15,
+    }, function(v)
+    print(v)
+    tprange = v
+end)
