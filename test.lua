@@ -171,10 +171,10 @@ end
 
 
 
-
-
-
-
+local Players = game:GetService("Players")
+local Mouse = Players.LocalPlayer:GetMouse()
+local numTeleports = 30 -- Define the number of teleports
+local tooggleEnabled = false -- Variable to track the toggle state
 
 
 
@@ -185,11 +185,16 @@ local UILib = loadstring(game:HttpGet('https://raw.githubusercontent.com/StepBro
 local Window = UILib.new("Lucid", game.Players.LocalPlayer.UserId, "Buyer")
 local Category1 = Window:Category("Player", "http://www.roblox.com/asset/?id=8395621517")
 local Category2 = Window:Category("Settings", "http://www.roblox.com/asset/?id=8395621517")
-local SubButton1 = Category1:Button("ㅤ|", "")
-local SubButton2 = Category2:Button("ㅤ", "")
+local Category3 = Window:Category("Kicking", "http://www.roblox.com/asset/?id=8395621517")
+local Category4 = Window:Category("Physics", "http://www.roblox.com/asset/?id=8395621517")
+local SubButton1 = Category1:Button("-", "")
+local SubButton2 = Category2:Button("--", "")
+local SubButton3 = Category3:Button("---", "")
+local SubButton4 = Category4:Button("----", "")
 local Section1 = SubButton1:Section("Humanoid", "Left")
 local Section2 = SubButton2:Section("Settings", "Left")
-
+local Section3 = SubButton3:Section("Kicking", "Left")
+local Section4 = SubButton4:Section("Enhancement", "Left")
 
 	local Spoofed = {};
         local Clone = game.Clone;
@@ -898,3 +903,152 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/CasperFlyModz/discord
 
 
 
+
+
+
+
+
+local autokick = false 
+
+task.spawn(function()
+
+getgenv().Variables = {}
+
+	Variables.Players = game:GetService("Players")
+	Variables.ReplicatedStorage = game:GetService("ReplicatedStorage")
+	Variables.UserInputService = game:GetService("UserInputService")
+	Variables.Client = Variables.Players.LocalPlayer
+	Variables.Character = Variables.Client.Character or Variables.Client.CharacterAdded:Wait()
+
+	Variables.Client.CharacterAdded:Connect(function(Character)
+		Variables.Character = Character 
+	end)
+
+	local Aimbot = {}
+
+	function Aimbot:GetAccuracyArrow(Arrows)
+		local Y = 0
+		local Arrow1 = nil
+
+		for _, Arrow in pairs(Arrows) do
+			if Arrow.Position.Y.Scale > Y then
+				Y = Arrow.Position.Y.Scale
+				Arrow1 = Arrow 
+			end
+		end
+
+		return Arrow1
+	end
+
+	Variables.Client.PlayerGui.ChildAdded:Connect(function(child)
+		if child.Name == "KickerGui" and autokick == true then
+			local KickerGui = child 
+			local Meter = KickerGui:FindFirstChild("Meter")
+			local Cursor = Meter:FindFirstChild("Cursor")
+			local Arrows = {}
+
+			for i,v in pairs(Meter:GetChildren()) do
+				if string.find(v.Name:lower(), "arrow") then
+					table.insert(Arrows, v)
+				end
+			end 
+
+			repeat task.wait() until Cursor.Position.Y.Scale < 0.02
+			mouse1click()
+			repeat task.wait() until Cursor.Position.Y.Scale >= Aimbot:GetAccuracyArrow(Arrows).Position.Y.Scale + (.03 / (100 / 100))
+			mouse1click()
+		end
+	end)
+end)
+
+
+
+Section3:Toggle({
+    Title = "Kicker Aimbot",
+    Description = "Automatically Kicks For You",
+    Default = false
+    }, function(v)
+    print(value)
+		autokick = v
+end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local isAntiJamEnabled = false
+
+local function updateCollisionState()
+	while true do
+		if isAntiJamEnabled then
+			if game.Players.LocalPlayer.Character.Head.CanCollide then
+				for _, player in ipairs(game:GetService('Players'):GetPlayers()) do
+					if player ~= game.Players.LocalPlayer then
+						pcall(function()
+							player.Character.Torso.CanCollide = false
+							player.Character.Head.CanCollide = false
+						end)
+					end
+				end
+			end
+		else
+			if not game.Players.LocalPlayer.Character.Head.CanCollide then
+				game.Players.LocalPlayer.Character.Torso.CanCollide = true
+				game.Players.LocalPlayer.Character.Head.CanCollide = true
+			end
+		end
+		task.wait()
+	end
+end
+
+Section4:Toggle({
+    Title = "Anti-Jam",
+    Description = "",
+    Default = false
+    }, function(enabled)
+    print(value)
+		isAntiJamEnabled = enabled
+end)
+
+
+spawn(updateCollisionState)
+
+local player = game.Players.LocalPlayer
+local toggleEnabled = false -- Variable to track if the toggle is enabled
+
+local function onKeyPress(input)
+    if toggleEnabled and input.KeyCode == Enum.KeyCode.F then
+        local character = player.Character
+        local humanoid = character and character:FindFirstChild("Humanoid")
+        if character and humanoid then
+            local forwardVector = character.HumanoidRootPart.CFrame.LookVector
+            local newPosition = character.HumanoidRootPart.Position + forwardVector * 3
+            local newCFrame = CFrame.new(newPosition, newPosition + forwardVector)
+            character.HumanoidRootPart.CFrame = newCFrame
+        end
+    end
+end
+
+
+
+
+Section4:Toggle({
+    Title = "Quick TP | F",
+    Description = "",
+    Default = false
+    }, function(value)
+    print(value)
+		toggleEnabled = value -- Update the toggle state when it's toggled on/off
+end)
+
+
+game:GetService("UserInputService").InputBegan:Connect(onKeyPress)
