@@ -1,3 +1,11 @@
+local whitelistecheck = loadstring(game:HttpGet("https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid.lua"))() -- pastebin link there
+if whitelistecheck[_G.key] then
+keys = {
+[asdasd123124565464] = true, -- Random key!
+}
+return keys
+game:service('Players').LocalPlayer:Kick('Not Whitelisted')
+end
 
 local CoreGui = Instance.new("ScreenGui")
 local Coreloader = Instance.new("Frame")
