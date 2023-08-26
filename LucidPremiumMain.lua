@@ -1,9 +1,9 @@
---Lucid Premium
+--Lucid [V2] 
 local gameId = game.GameId
 
 if gameId == 3150475059 then
 
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/LucidHubPremium/LucidPremium/main/Lucid-Premium-FF2.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/LucidHubPremium/Lucid-V2-/main/Lucid%5BV2%5DFF2.lua"))()
     print("Lucid Premium FF2 Loaded")
 
 
