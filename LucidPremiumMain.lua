@@ -3,7 +3,7 @@ local gameId = game.GameId
 
 if gameId == 3150475059 then
 
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/LucidHubPremium/Lucid-V2-/main/Premium-FF2.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/LucidHubPremium/Lucid-V2-/main/FF2.lua"))()
     print("Lucid Premium FF2 Loaded")
 
 
